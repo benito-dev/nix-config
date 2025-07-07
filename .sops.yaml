@@ -1,6 +1,6 @@
 Keys:
   - &users:
-    - &benito age1qcn9gz4axy90smrxzuxajdh7yhrt28wkruyj7jrp4tn4xuhjjyesn2y7z4
+    - &benito age1x4sdl4vawvmumyxhpp5kk8nlpkxjzr0jmfzpqpztw55htcq6u3psv6378t
 creation_rules:
   - path_regex: secrets/secrets.yaml
     key_groups:

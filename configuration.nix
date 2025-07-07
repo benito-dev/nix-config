@@ -109,10 +109,13 @@
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     validateSopsFiles = false;
+    
     age = {
-      sshKeyPaths = [ "/home/benito/.ssh/nixos-key" ];
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
+      keyFile = /home/benito/.config/sops/age/keys.txt;
+      # Later create a host level sops for only decrypting secrets and user lvl sops for creating secrets  
+      #sshKeyPaths = [ "/home/benito/.ssh/nixos-key" ];
+      #keyFile = "/var/lib/sops-nix/key.txt";
+      #generateKey = true;
     };
     secrets = {
       "cifs/credentials" = { };
@@ -120,7 +123,7 @@
   };
 
  # Samba Mount
-
+ 
   fileSystems."/mnt/data" = {
     device = "//192.168.0.101/data";
     fsType = "cifs";
@@ -133,6 +136,7 @@
       },uid=benito,gid=media,dir_mode=0770,file_mode=0770"
     ];
   };
+
 
   system.stateVersion = "25.05";
 

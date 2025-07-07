@@ -1,0 +1,8 @@
+Keys:
+  - &users:
+    - &benito age1qcn9gz4axy90smrxzuxajdh7yhrt28wkruyj7jrp4tn4xuhjjyesn2y7z4
+creation_rules:
+  - path_regex: secrets/secrets.yaml
+    key_groups:
+    - age:
+      - *benito

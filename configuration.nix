@@ -1,7 +1,7 @@
-{ config, pkgs, lib, hostname, ... }:
+{ inputs, config, pkgs, lib, hostname, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix inputs.sops-nix.nixosModules.sops ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -80,7 +80,7 @@
 
   # System Packages
 
-  environment.systemPackages = with pkgs; [ nixfmt-classic nix-ld git ];
+  environment.systemPackages = with pkgs; [ nixfmt-classic nix-ld git sops cifs-utils ];
 
   nixpkgs.config.allowUnfree = true;
   programs = {
@@ -103,6 +103,35 @@
         PasswordAuthentication = false;
       };
     };
+  };
+
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    validateSopsFiles = false;
+    age = {
+      sshKeyPaths = [ "/home/benito/.ssh/nixos-key" ];
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+    secrets = {
+      "cifs/credentials" = { };
+    };
+  };
+
+ # Samba Mount
+
+  fileSystems."/mnt/data" = {
+    device = "//192.168.0.101/data";
+    fsType = "cifs";
+    options = let
+      automount_opts =
+        "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=${
+        config.sops.secrets."cifs/credentials".path
+      },uid=benito,gid=media,dir_mode=0770,file_mode=0770"
+    ];
   };
 
   system.stateVersion = "25.05";

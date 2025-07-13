@@ -151,9 +151,17 @@ in {
             ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Password_PBKDF2" "\"$hash\""
             ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Username" "\"${cfg.username}\""
 
-            #chown -R  ${cfg.user}:${cfg.group} ${cfg.profile}/
+            # Install Vuetorrent Webui
+            [ ! -f /var/lib/qBittorrent/qBittorrent/vuetorrent.zip ] && \
+            ${pkgs.curl}/bin/curl -JLo ${cfg.profile}/qBittorrent/vuetorrent.zip "https://github.com/VueTorrent/VueTorrent/releases/latest/download/vuetorrent.zip"
+            [ ! -d /var/lib/qBittorrent/qBittorrent/vuetorrent ] && \
+            ${pkgs.unzip}/bin/unzip ${cfg.profile}/qBittorrent/vuetorrent.zip -d ${cfg.profile}/qBittorrent/ 
+            ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\AlternativeUIEnabled" "true"
+            ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\RootFolder" "/var/lib/qBittorrent/qBittorrent/vuetorrent"
+
+            chown -R  ${cfg.user}:${cfg.group} ${cfg.profile}/
           '';
-          # Requires full permissions to create data directory, hence the "!".
+        # Requires full permissions to create data directory, hence the "!".
         in "!${start-pre-script}";
         ExecStart = pkgs.writeShellScript "qbittorrent-start" ''
           exec ${cfg.package}/bin/qbittorrent-nox --webui-port=${toString cfg.port} --profile=${cfg.profile}
@@ -164,24 +172,9 @@ in {
         IOSchedulingClass = "idle";
         IOSchedulingPriority = "7";
       };
-
       wantedBy = [ "multi-user.target" ];
     };
-    systemd.services.vuetorrent = {
-      description = "Install Vuetorrent";
-      after = [ "qbittorrent-nox.service" ];
-      wantedBy = [ "multi-user.target" ];
 
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = false;
-        ExecStart = pkgs.writeShellScript "Install Vuetorrent" ''
-          [ -f /var/lib/qBittorrent/qBittorrent/vuetorrent.zip ] && exit 0
-          ${pkgs.curl}/bin/curl -JLo ${cfg.profile}/qBittorrent/vuetorrent.zip "https://github.com/VueTorrent/VueTorrent/releases/latest/download/vuetorrent.zip"  && \n 
-          ${pkgs.unzip}/bin/unzip ${cfg.profile}/qBittorrent/vuetorrent.zip -d ${cfg.profile}/qBittorrent/ &&  chown -R ${cfg.user}:${cfg.group} ${cfg.profile}/qBittorrent/vuetorrent '';
-      };
-    };
-    
     networking.firewall =
       lib.mkIf cfg.openFirewall { allowedTCPPorts = [ cfg.port ]; };
 

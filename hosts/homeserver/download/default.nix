@@ -7,6 +7,7 @@
     group = "media";
     vuetorrent = true;
     settings = {
+ 
       BitTorrent = {
         "Session\\AddTorrentStopped" = "false";
         "Session\\BTProtocol" = "TCP";
@@ -34,18 +35,24 @@
         "Session\\ShareLimitAction" = "Stop";
         "Session\\TempPath" = "/mnt/data/torrent/incoming";
         "Session\\TempPathEnabled" = "true";
-        "Session\\UseAlternativeGlobalSpeedLimit" = "false";
         "Session\\uTPRateLimited" = "true";
-
+        "Connection\\ALT_SPEEDS_ENABLED" = "true";
+        "Connection\\GlobalDLLimitAlt" = "83008";
+        "Connection\\GlobalUPLimitAlt" = "1024";
+        "Scheduler\\Enabled" = "true" ;
+        "Scheduler\\start_time" = "0";
+        "Scheduler\\end_time" = "1020";
+        "Scheduler\\days=1234567"
       };
+ 
       Core = { "AutoDeleteAddedTorrentFile" = "Always"; };
+ 
       Preferences = {
-        "WebUI\\AlternativeUIEnabled" = "true";
         "WebUI\\AuthSubnetWhitelist" = "192.168.0.0/24";
         "WebUI\\AuthSubnetWhitelistEnabled" = "true";
         "WebUI\\LocalHostAuth" = "false";
-        "WebUI\\RootFolder" = "/var/lib/qBittorrent/qBittorrent/vuetorrent";
       };
+ 
     };
   };
 }

@@ -17,23 +17,12 @@
     };
   };
 
-  outputs = { nixpkgs, self, ... }@inputs:
-    let
+  outputs = { self, nixpkgs, ... }@inputs: {
+    nixosConfigurations.homeserver = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      version = "25.05";
-      hostname = "homeserver";
-      pkgs = import nixpkgs { inherit system; };
-      lib = nixpkgs.lib;
-    in {
-      nixosConfigurations = {
-        ${hostname} = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit hostname;
-            inherit inputs;
-          };
-          modules = [ ./configuration.nix ];
-        };
-      };
+      specialArgs = { inherit inputs; };
+      modules = [ ./hosts/homeserver/configuration.nix ];
     };
+  };
+
 }

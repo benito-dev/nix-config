@@ -7,6 +7,7 @@
     ./arrStack
     ./download
     inputs.sops-nix.nixosModules.sops
+    ./homepage-dashboard
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -141,6 +142,7 @@
       "sonarr/ENV/apikey" = { owner = "sonarr"; };
       "qbittorrent/username" = {};
       "qbittorrent/password" = {};
+      "homepage-dashboard/sonarr_apikey" = {};
     };
   };
 

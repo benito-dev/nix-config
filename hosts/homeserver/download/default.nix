@@ -36,13 +36,15 @@
         "Session\\TempPath" = "/mnt/data/torrent/incoming";
         "Session\\TempPathEnabled" = "true";
         "Session\\uTPRateLimited" = "true";
-        "Connection\\ALT_SPEEDS_ENABLED" = "true";
         "Connection\\GlobalDLLimitAlt" = "83008";
         "Connection\\GlobalUPLimitAlt" = "1024";
         "Scheduler\\Enabled" = "true" ;
         "Scheduler\\start_time" = "0";
         "Scheduler\\end_time" = "1020";
-        "Scheduler\\days=1234567"
+        "Scheduler\\days" = "1234567";
+        "Session\\UseAlternativeGlobalSpeedLimit" = "true";
+        "Session\\AlternativeGlobalDLSpeedLimit" = "83008";
+        "Session\\AlternativeGlobalUPSpeedLimit" = "50";
       };
  
       Core = { "AutoDeleteAddedTorrentFile" = "Always"; };
@@ -51,8 +53,9 @@
         "WebUI\\AuthSubnetWhitelist" = "192.168.0.0/24";
         "WebUI\\AuthSubnetWhitelistEnabled" = "true";
         "WebUI\\LocalHostAuth" = "false";
+        "Scheduler\\end_time" = "@Variant(\\0\\0\\0\\xf\\0\\0\\0\\0)";
+        "Scheduler\\start_time" = "@Variant(\\0\\0\\0\\xf\\x3\\xa5\\xd6\\x80)";
       };
- 
     };
   };
 }

@@ -19,13 +19,13 @@ in {
       username = lib.mkOption {
         description = "Sonarr user, defaults to sops secret";
         type = lib.types.str;
-        default = "cat ${config.sops.secrets."sonarr/username".path}";
+        default = "$(cat ${config.sops.secrets."sonarr/username".path})";
       };
 
       password = lib.mkOption {
         description = "Sonarr password, defaults to sops secret";
         type = lib.types.str;
-        default = "cat ${config.sops.secrets."sonarr/password".path}";
+        default = "$(cat ${config.sops.secrets."sonarr/password".path})";
       };
 
       method = lib.mkOption {
@@ -38,7 +38,7 @@ in {
         description =
           "Authentication required for, enabled disabledForLocalAdresses";
         type = lib.types.str;
-        default = "disabledForLocalAdresses";
+        default = "disabledForLocalAddresses";
       };
       rootPath = lib.mkOption {
         description = "Path to root path";

@@ -2,30 +2,30 @@
 
 let
 
-  cfg = config.services.sonarr;
+  cfg = config.services.radarr;
 
 in {
-  options.services.sonarr = {
+  options.services.radarr = {
     init = {
-      enable = lib.mkEnableOption "Initializing Sonarr Authentication";
+      enable = lib.mkEnableOption "Initializing Radarr Authentication";
 
       apikey = lib.mkOption {
         description =
-          "Sonarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
+          "Radarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
         type = lib.types.str;
-        default = "cat ${config.sops.secrets."sonarr/apikey".path}";
+        default = "cat ${config.sops.secrets."radarr/apikey".path}";
       };
 
       username = lib.mkOption {
-        description = "Sonarr user, defaults to sops secret";
+        description = "Radarr user, defaults to sops secret";
         type = lib.types.str;
-        default = "$(cat ${config.sops.secrets."sonarr/username".path})";
+        default = "$(cat ${config.sops.secrets."radarr/username".path})";
       };
 
       password = lib.mkOption {
-        description = "Sonarr password, defaults to sops secret";
+        description = "Radarr password, defaults to sops secret";
         type = lib.types.str;
-        default = "$(cat ${config.sops.secrets."sonarr/password".path})";
+        default = "$(cat ${config.sops.secrets."radarr/password".path})";
       };
 
       method = lib.mkOption {
@@ -43,17 +43,17 @@ in {
       rootPath = lib.mkOption {
         description = "Path to root path";
         type = lib.types.path;
-        default = "/mnt/data/media/tvshows";
+        default = "/mnt/data/media/movies";
       };
       torrent.enable = lib.mkEnableOption "Initializing qBitorrent";
     };
   };
 
   config = lib.mkIf cfg.init.enable {
-    systemd.services.initSonarr = {
-      description = "Initialize Sonarr";
-      after = [ "sonarr.service" ];
-      wants = [ "sonarr.service" ];
+    systemd.services.initRadarr = {
+      description = "Initialize Radarr";
+      after = [ "radarr.service" ];
+      wants = [ "radarr.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";
@@ -61,15 +61,15 @@ in {
         #will update along the way when the need arises
         #settings.server.port for port option
         # ugly expansion within data portion of api call, should use jq ?
-        ExecStart = pkgs.writeShellScript "Initialize Sonarr" ''
-          ${pkgs.curl}/bin/curl -X 'PUT' 'http://localhost:8989/api/v3/config/host' \
+        ExecStart = pkgs.writeShellScript "Initialize Radarr" ''
+          ${pkgs.curl}/bin/curl -X 'PUT' 'http://localhost:7878/api/v3/config/host' \
             -H "X-Api-Key: $(${cfg.init.apikey})" \
-            -H "Host: localhost:8989" \
+            -H "Host: localhost:7878" \
             -H "Content-Type: application/json" \
             -d  '{
               "bindAddress": "*",
-              "port": 8989,
-              "sslPort": 9898,
+              "port": 7878,
+              "sslPort": 7878,
               "enableSsl": false,
               "launchBrowser": true,
               "authenticationMethod": "'"${cfg.init.method}"'",
@@ -81,12 +81,12 @@ in {
               "logLevel": "debug",
               "logSizeLimit": 1,
               "consoleLogLevel": "",
-              "branch": "main",
+              "branch": "master",
               "apiKey": "'"${cfg.init.apikey}"'",
               "sslCertPath": "",
               "sslCertPassword": "",
               "urlBase": "",
-              "instanceName": "Sonarr",
+              "instanceName": "Radarr",
               "applicationUrl": "",
               "updateAutomatically": false,
               "updateMechanism": "builtIn",
@@ -107,36 +107,37 @@ in {
               "id": 1
             }'   
 
-          ${pkgs.curl}/bin/curl -X POST http://localhost:8989/api/v3/rootFolder \
+          ${pkgs.curl}/bin/curl -X POST http://localhost:7878/api/v3/rootFolder \
             -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
             -H "Content-Type: application/json" \
             -d '{"path":"'"${cfg.init.rootPath}"'"}'
-
-          ${lib.optionalString cfg.init.torrent.enable ''
-            ${pkgs.curl}/bin/curl -X POST http://localhost:8989/api/v3/downloadclient \
-              -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
-              -H "Content-Type: application/json" \
-              -d '{
-                "enable": true,
-                "name": "qBittorrent",
-                "protocol": "torrent",
-                "implementation": "QBittorrent",
-                "configContract": "QBittorrentSettings",
-                "fields": [
-                  { "name": "host", "value": "localhost" },
-                  { "name": "port", "value": 8080 },
-                  { "name": "useSsl", "value": false },
-                  { "name": "urlBase", "value": "" },
-                  { "name": "username", "value": "admin" },
-                  { "name": "password", "value": "test" },
-                  { "name": "category", "value": "sonarr" },
-                  { "name": "recentTvPriority", "value": 1 },
-                  { "name": "olderTvPriority", "value": 1 },
-                  { "name": "addPaused", "value": false }],
-                "priority": 1,
-                "removeCompletedDownloads": true,
-                "removeFailedDownloads": true }'
-          ''}
+              ${
+                lib.optionalString cfg.init.torrent.enable ''
+                  ${pkgs.curl}/bin/curl -X POST http://localhost:7878/api/v3/downloadclient \
+                    -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
+                    -H "Content-Type: application/json" \
+                    -d '{
+                      "enable": true,
+                      "name": "qBittorrent",
+                      "protocol": "torrent",
+                      "implementation": "QBittorrent",
+                      "configContract": "QBittorrentSettings",
+                      "fields": [
+                        { "name": "host", "value": "localhost" },
+                        { "name": "port", "value": 8080 },
+                        { "name": "useSsl", "value": false },
+                        { "name": "urlBase", "value": "" },
+                        { "name": "username", "value": "admin" },
+                        { "name": "password", "value": "test" },
+                        { "name": "category", "value": "radarr" },
+                        { "name": "recentTvPriority", "value": 1 },
+                        { "name": "olderTvPriority", "value": 1 },
+                        { "name": "addPaused", "value": false }],
+                      "priority": 1,
+                      "removeCompletedDownloads": true,
+                      "removeFailedDownloads": true }'
+                ''
+              }
         '';
 
       };

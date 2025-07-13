@@ -2,12 +2,13 @@
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ./hardware-configuration.nix
     ../../modules/homeserver.nix
     ./arrStack
     ./download
-    inputs.sops-nix.nixosModules.sops
     ./homepage-dashboard
+
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -69,7 +70,7 @@
     extraGroups = [ "networkmanager" "wheel" "media" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL benito@tux"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC78SVoQExVRFtie6CHRmxgB3BgYtQ/OqLqPmA1LZvDa azuread\benoitblervaque@PC000033"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC78SVoQExVRFtie6CHRmxgB3BgYtQ/OqLqPmA1LZvDa azureadbenoitblervaque@PC000033"
     ];
     packages = with pkgs; [ ];
   };
@@ -136,13 +137,9 @@
     };
     secrets = {
       "cifs/credentials" = { };
-      "sonarr/apikey" = { owner = "sonarr"; };
-      "sonarr/username" = { owner = "sonarr"; };
-      "sonarr/password" = { owner = "sonarr"; };
-      "sonarr/ENV/apikey" = { owner = "sonarr"; };
-      "qbittorrent/username" = {};
-      "qbittorrent/password" = {};
-      "homepage-dashboard/sonarr_apikey" = {};
+      "qbittorrent/username" = { };
+      "qbittorrent/password" = { };
+      "homepage-dashboard" = { };
     };
   };
 

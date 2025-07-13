@@ -7,7 +7,7 @@
     enable = true;
     openFirewall = true;
     allowedHosts = "*";
-    environmentFiles =  "${config.sops.secrets."homepage-dashboard/sonarr_apikey".path}" ;
+    environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
   };
 }
 

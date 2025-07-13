@@ -6,9 +6,8 @@ let
   defaultUser = "qbittorrent";
   defaultGroup = "qbittorrent";
   cfg = config.services.qbittorrent;
-  qbittorrent_hash = pkgs.writers.writePython3 "qbittorrent_hash" {}
-  (builtins.readFile ./qbittorrent_hash.py);
-
+  qbittorrent_hash = pkgs.writers.writePython3 "qbittorrent_hash" { }
+    (builtins.readFile ./qbittorrent_hash.py);
 
 in {
 
@@ -78,7 +77,7 @@ in {
     };
     password = lib.mkOption {
       type = lib.types.str;
-      default =  "cat ${config.sops.secrets."qbittorrent/password".path}";
+      default = "cat ${config.sops.secrets."qbittorrent/password".path}";
       description = "Add vuetorrent webui to qBittorrent";
     };
 
@@ -145,7 +144,7 @@ in {
 
             # Force-apply configuration.
             ${pkgs.crudini}/bin/crudini --ini-options=nospace --merge ${configPath} <${settingsFile}
-            
+
             # Generate password hash from password and apply to configuration
             hash=$(${pkgs.python3}/bin/python3 ${qbittorrent_hash} "test")
             ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Password_PBKDF2" "\"$hash\""
@@ -161,10 +160,12 @@ in {
 
             chown -R  ${cfg.user}:${cfg.group} ${cfg.profile}/
           '';
-        # Requires full permissions to create data directory, hence the "!".
+          # Requires full permissions to create data directory, hence the "!".
         in "!${start-pre-script}";
         ExecStart = pkgs.writeShellScript "qbittorrent-start" ''
-          exec ${cfg.package}/bin/qbittorrent-nox --webui-port=${toString cfg.port} --profile=${cfg.profile}
+          exec ${cfg.package}/bin/qbittorrent-nox --webui-port=${
+            toString cfg.port
+          } --profile=${cfg.profile}
         '';
         TimeoutStopSec = 1800;
 

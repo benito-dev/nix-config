@@ -7,7 +7,7 @@
     group = "media";
     vuetorrent = true;
     settings = {
- 
+
       BitTorrent = {
         "Session\\AddTorrentStopped" = "false";
         "Session\\BTProtocol" = "TCP";
@@ -38,7 +38,7 @@
         "Session\\uTPRateLimited" = "true";
         "Connection\\GlobalDLLimitAlt" = "83008";
         "Connection\\GlobalUPLimitAlt" = "1024";
-        "Scheduler\\Enabled" = "true" ;
+        "Scheduler\\Enabled" = "true";
         "Scheduler\\start_time" = "0";
         "Scheduler\\end_time" = "1020";
         "Scheduler\\days" = "1234567";
@@ -46,9 +46,9 @@
         "Session\\AlternativeGlobalDLSpeedLimit" = "83008";
         "Session\\AlternativeGlobalUPSpeedLimit" = "50";
       };
- 
+
       Core = { "AutoDeleteAddedTorrentFile" = "Always"; };
- 
+
       Preferences = {
         "WebUI\\AuthSubnetWhitelist" = "192.168.0.0/24";
         "WebUI\\AuthSubnetWhitelistEnabled" = "true";

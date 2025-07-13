@@ -1,7 +1,13 @@
-{ inputs, config, pkgs, lib, hostname, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix inputs.sops-nix.nixosModules.sops ];
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/homeserver.nix
+    ./arrStack
+    ./download
+    inputs.sops-nix.nixosModules.sops
+  ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -21,7 +27,7 @@
     dhcpcd.enable = false;
     defaultGateway = "192.168.0.1";
     nameservers = [ "195.130.131.1" "195.130.130.1" ];
-    hostName = "${hostname}";
+    hostName = "homeserver";
     firewall = {
       enable = true;
       allowPing = true;
@@ -62,6 +68,7 @@
     extraGroups = [ "networkmanager" "wheel" "media" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL benito@tux"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC78SVoQExVRFtie6CHRmxgB3BgYtQ/OqLqPmA1LZvDa azuread\benoitblervaque@PC000033"
     ];
     packages = with pkgs; [ ];
   };
@@ -80,7 +87,15 @@
 
   # System Packages
 
-  environment.systemPackages = with pkgs; [ nixfmt-classic nix-ld git sops cifs-utils ];
+  environment.systemPackages = with pkgs; [
+    nixfmt-classic
+    nix-ld
+    git
+    sops
+    cifs-utils
+    age
+    python3
+  ];
 
   nixpkgs.config.allowUnfree = true;
   programs = {
@@ -101,17 +116,18 @@
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
       };
     };
   };
 
   sops = {
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ../../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     validateSopsFiles = false;
-    
+
     age = {
-      keyFile = /home/benito/.config/sops/age/keys.txt;
+      keyFile = "/home/benito/.config/sops/age/keys.txt";
       # Later create a host level sops for only decrypting secrets and user lvl sops for creating secrets  
       #sshKeyPaths = [ "/home/benito/.ssh/nixos-key" ];
       #keyFile = "/var/lib/sops-nix/key.txt";
@@ -119,11 +135,17 @@
     };
     secrets = {
       "cifs/credentials" = { };
+      "sonarr/apikey" = { owner = "sonarr"; };
+      "sonarr/username" = { owner = "sonarr"; };
+      "sonarr/password" = { owner = "sonarr"; };
+      "sonarr/ENV/apikey" = { owner = "sonarr"; };
+      "qbittorrent/username" = {};
+      "qbittorrent/password" = {};
     };
   };
 
- # Samba Mount
- 
+  # Samba Mount
+
   fileSystems."/mnt/data" = {
     device = "//192.168.0.101/data";
     fsType = "cifs";
@@ -136,7 +158,6 @@
       },uid=benito,gid=media,dir_mode=0770,file_mode=0770"
     ];
   };
-
 
   system.stateVersion = "25.05";
 

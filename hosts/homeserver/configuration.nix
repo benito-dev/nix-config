@@ -98,6 +98,9 @@
     cifs-utils
     age
     python3
+    pkgs.jellyfin
+    pkgs.jellyfin-web
+    pkgs.jellyfin-ffmpeg
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -113,7 +116,6 @@
   # Services
 
   services = {
-
     openssh = {
       enable = true;
       settings = {
@@ -140,7 +142,6 @@
       "cifs/credentials" = { };
       "qbittorrent/username" = { };
       "qbittorrent/password" = { };
-      "homepage-dashboard" = { };
     };
   };
 

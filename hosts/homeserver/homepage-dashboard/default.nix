@@ -3,6 +3,8 @@
 {
   imports = [ ./services.nix ./settings.nix ./widget.nix ];
 
+  sops.secrets = { "homepage-dashboard" = { }; };
+
   services.homepage-dashboard = {
     enable = true;
     openFirewall = true;

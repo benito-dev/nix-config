@@ -64,24 +64,24 @@
           };
         };
       }
-    #  {
- #       "Jellyfin" = {
-  #        href = "http://192.168.0.240:${
-  #            toString
-  #            config.services.declarative-jellyfin.network.internalHttpPort
-  #          }";
-  #        icon = "jellyfin";
-  #        widget = {
-  #          type = "jellyfin";
-  #          url = "http://192.168.0.240:${
-  #              toString
-  #              config.services.declarative-jellyfin.network.internalHttpPort
-  #            }";
-  #          key = "a2b476e77f414908b8bb51d4f6100f0e";
-  #          enableBlocks = true;
-  #        };
-  #      };
-  #    }
+      {
+        "Jellyfin" = {
+          href = "http://192.168.0.240:${
+              toString
+              config.services.declarative-jellyfin.network.internalHttpPort
+            }";
+          icon = "jellyfin";
+          widget = {
+            type = "jellyfin";
+            url = "http://192.168.0.240:${
+                toString
+                config.services.declarative-jellyfin.network.internalHttpPort
+              }";
+            key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
+            enableBlocks = true;
+          };
+        };
+      }
     ];
   }];
 }

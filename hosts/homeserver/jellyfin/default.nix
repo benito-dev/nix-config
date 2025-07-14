@@ -1,8 +1,13 @@
-{ lib, pkgs, inputs, ... }:
+{ config, options, inputs, ... }:
 
 {
 
   imports = [ inputs.declarative-jellyfin.nixosModules.default ];
+
+  sops.secrets = {
+    "jellyfin/apikey" = { };
+    "jellyfin/benito/password" = { };
+  };
 
   services.declarative-jellyfin = {
     # Move metadate to statefull storage
@@ -11,25 +16,32 @@
     group = "media";
     openFirewall = true;
 
-    system = { serverName = "JellyNix"; };
-    users.benito = {
-      mutable = false;
-      password = "test";
-      permissions.isAdministrator = true;
+    system = {
+      serverName = "JellyNix";
+
     };
+
     libraries = {
-      "Movies" = {
+      Movies = {
         enabled = true;
         contentType = "movies";
-        pathInfos = [ "/mnt/test" ];
-        preferredMetadataLanguage = "fr";
-        enableChapterImageExtraction = true;
-        extractChapterImagesDuringLibraryScan = true;
-        enableTrickplayImageExtraction = true;
-        extractTrickplayImagesDuringLibraryScan = true;
-        saveTrickplayWithMedia = true;
+        pathInfos = [ "/mnt/data/media/movies" ];
+      };
 
+      Series = {
+        enabled = true;
+        contentType = "tvshows";
+        pathInfos = [ "/mnt/data/media/tvshows" ];
       };
     };
+
+    users.benito = {
+      mutable = false;
+      hashedPasswordFile = config.sops.secrets."jellyfin/benito/password".path;
+      permissions.isAdministrator = true;
+    };
+
+    apikeys.Main.keyPath = config.sops.secrets."jellyfin/apikey".path;
+
   };
 }

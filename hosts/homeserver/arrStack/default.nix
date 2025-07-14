@@ -10,6 +10,8 @@
     "radarr/username" = { };
     "radarr/password" = { };
     "radarr/ENV/apikey" = { };
+    "prowlarr/ENV/apikey" = { };
+
   };
 
   services.sonarr = {
@@ -30,17 +32,26 @@
     environmentFiles = [ config.sops.secrets."radarr/ENV/apikey".path ];
   };
 
-systemd.services.recyclarr.serviceConfig.LoadCredential = [
-  "sonarr-api_key:${config.sops.secrets."sonarr/apikey".path}"
-  "radarr-api_key:${config.sops.secrets."radarr/apikey".path}"
-];
+  services.prowlarr = {
+    enable = true;
+    openFirewall = true;
+    #init.enable = true;
+    environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
+
+  };
+
+  systemd.services.recyclarr.serviceConfig.LoadCredential = [
+    "sonarr-api_key:${config.sops.secrets."sonarr/apikey".path}"
+    "radarr-api_key:${config.sops.secrets."radarr/apikey".path}"
+  ];
 
   services.recyclarr.enable = true;
   services.recyclarr.configuration = {
     sonarr = {
       sonarr_main = {
-        base_url = "http://localhost:${toString config.services.sonarr.settings.server.port
-            }";
+        base_url = "http://localhost:${
+            toString config.services.sonarr.settings.server.port
+          }";
         api_key._secret = "/run/credentials/recyclarr.service/sonarr-api_key";
         quality_definition = { type = "series"; };
         delete_old_custom_formats = true;
@@ -177,7 +188,9 @@ systemd.services.recyclarr.serviceConfig.LoadCredential = [
 
     radarr = {
       radarr_main = {
-        base_url = "http://localhost:${toString config.services.radarr.settings.server.port}";
+        base_url = "http://localhost:${
+            toString config.services.radarr.settings.server.port
+          }";
         api_key._secret = "/run/credentials/recyclarr.service/radarr-api_key";
         quality_definition = { type = "movie"; };
         delete_old_custom_formats = true;
@@ -329,6 +342,4 @@ systemd.services.recyclarr.serviceConfig.LoadCredential = [
     };
   };
 }
-
-
 

@@ -2,12 +2,13 @@
 
 {
   imports = [
-    inputs.sops-nix.nixosModules.sops
+
     ./hardware-configuration.nix
     ../../modules/homeserver.nix
     ./arrStack
     ./download
     ./homepage-dashboard
+    ./jellyfin
 
   ];
 

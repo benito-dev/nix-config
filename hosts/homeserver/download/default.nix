@@ -26,8 +26,8 @@
         "Session\\MaxActiveDownloads" = "10";
         "Session\\MaxActiveTorrents" = "20";
         "Session\\MaxActiveUploads" = "2";
-        "Session\\MaxConnections" = "1500";
-        "Session\\MaxConnectionsPerTorrent" = "250";
+        "Session\\MaxConnections" = "1000";
+        "Session\\MaxConnectionsPerTorrent" = "100";
         "Session\\Port" = "63586";
         "Session\\Preallocation" = "true";
         "Session\\QueueingSystemEnabled" = "true";

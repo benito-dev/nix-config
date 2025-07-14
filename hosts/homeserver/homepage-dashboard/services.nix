@@ -1,7 +1,6 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
-{ config, ... }:
-{
+{ config, ... }: {
   services.homepage-dashboard.services = [{
     "Media" = [
       {
@@ -37,18 +36,52 @@
         };
       }
       {
+        "Prowlarr" = {
+          href = "http://192.168.0.240:${
+              toString config.services.prowlarr.settings.server.port
+            }";
+          icon = "prowlarr";
+          widget = {
+            type = "prowlarr";
+            url = "http://192.168.0.240:${
+                toString config.services.prowlarr.settings.server.port
+              }";
+            key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
+          };
+        };
+      }
+      {
         "qBittorrent" = {
           href =
             "http://192.168.0.240:${toString config.services.qbittorrent.port}";
           icon = "qbittorrent.png";
           widget = {
             type = "qbittorrent";
-            url =
-              "http://192.168.0.240:${toString config.services.qbittorrent.port}";
+            url = "http://192.168.0.240:${
+                toString config.services.qbittorrent.port
+              }";
             enableLeechProgress = true;
           };
         };
       }
+    #  {
+ #       "Jellyfin" = {
+  #        href = "http://192.168.0.240:${
+  #            toString
+  #            config.services.declarative-jellyfin.network.internalHttpPort
+  #          }";
+  #        icon = "jellyfin";
+  #        widget = {
+  #          type = "jellyfin";
+  #          url = "http://192.168.0.240:${
+  #              toString
+  #              config.services.declarative-jellyfin.network.internalHttpPort
+  #            }";
+  #          key = "a2b476e77f414908b8bb51d4f6100f0e";
+  #          enableBlocks = true;
+  #        };
+  #      };
+  #    }
     ];
   }];
 }

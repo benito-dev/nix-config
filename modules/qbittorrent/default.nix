@@ -146,7 +146,7 @@ in {
             ${pkgs.crudini}/bin/crudini --ini-options=nospace --merge ${configPath} <${settingsFile}
 
             # Generate password hash from password and apply to configuration
-            hash=$(${pkgs.python3}/bin/python3 ${qbittorrent_hash} "test")
+            hash=$(${pkgs.python3}/bin/python3 ${qbittorrent_hash} ${cfg.password})
             ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Password_PBKDF2" "\"$hash\""
             ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Username" "\"${cfg.username}\""
 

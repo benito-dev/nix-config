@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./sonarr ./qbittorrent ./radarr ]; }
+{ ... }: { imports = [ ./sonarr ./qbittorrent ./radarr ./jellyseerr ]; }

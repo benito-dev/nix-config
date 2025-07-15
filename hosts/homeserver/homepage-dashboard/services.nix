@@ -4,6 +4,21 @@
   services.homepage-dashboard.services = [{
     "Media" = [
       {
+        "Jellyseerr" = {
+          href =
+            "http://192.168.0.240:${toString config.services.jellyseerr.port}";
+          icon = "jellyseerr";
+          widget = {
+            type = "jellyseerr";
+            url = "http://192.168.0.240:${
+                toString config.services.jellyseerr.port
+              }";
+            key =
+              "MTc1MDg3OTYyMjEwM2Y5Njg4ZWVkLWYyNWMtNDdkYi1hYTkzLTM5MzNlMGFjNmM1YQ==";
+          };
+        };
+      }
+      {
         "Sonarr" = {
           href = "http://192.168.0.240:${
               toString config.services.sonarr.settings.server.port

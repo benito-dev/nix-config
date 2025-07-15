@@ -11,7 +11,6 @@
     "radarr/password" = { };
     "radarr/ENV/apikey" = { };
     "prowlarr/ENV/apikey" = { };
-
   };
 
   services.sonarr = {
@@ -37,7 +36,12 @@
     openFirewall = true;
     #init.enable = true;
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
+  };
 
+  services.jellyseerr = {
+    enable = true;
+    openFirewall = true;
+    #init.enable = true;
   };
 
   systemd.services.recyclarr.serviceConfig.LoadCredential = [

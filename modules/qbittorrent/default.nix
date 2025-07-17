@@ -1,16 +1,23 @@
 # This module defines a service which runs a headless qBittorrent instance
-{ config, options, lib, pkgs, ... }:
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
   defaultUser = "qbittorrent";
   defaultGroup = "qbittorrent";
   cfg = config.services.qbittorrent;
-  qbittorrent_hash = pkgs.writers.writePython3 "qbittorrent_hash" {}
-  (builtins.readFile ./qbittorrent_hash.py);
+  qbittorrent_hash = pkgs.writers.writePython3 "qbittorrent_hash" { } (
+    builtins.readFile ./qbittorrent_hash.py
+  );
 
-
-in {
+in
+{
 
   options.services.qbittorrent = {
     enable = lib.mkEnableOption "headless qBittorrent instance";
@@ -78,7 +85,7 @@ in {
     };
     password = lib.mkOption {
       type = lib.types.str;
-      default =  "cat ${config.sops.secrets."qbittorrent/password".path}";
+      default = "cat ${config.sops.secrets."qbittorrent/password".path}";
       description = "Add vuetorrent webui to qBittorrent";
     };
 
@@ -93,7 +100,11 @@ in {
         configuration file.
       '';
       type = lib.types.attrs;
-      default = { LegalNotice = { Accepted = false; }; };
+      default = {
+        LegalNotice = {
+          Accepted = false;
+        };
+      };
       apply = lib.recursiveUpdate default;
 
     };
@@ -108,19 +119,20 @@ in {
         isSystemUser = true;
       };
     };
-    users.groups =
-      lib.mkIf (cfg.group == defaultGroup) { ${defaultGroup} = { }; };
+    users.groups = lib.mkIf (cfg.group == defaultGroup) { ${defaultGroup} = { }; };
 
     # Set up a service to run qBittorrent
     # See: https://github.com/qbittorrent/qBittorrent/blob/615b76f78c8ab92ad57bed42fc4266950c9f0251/dist/unix/systemd/qbittorrent-nox%40.service.in
 
     systemd.services.qbittorrent = {
       enable = true;
-
       unitConfig = {
         Wants = [ "network-online.target" ];
-        After =
-          [ "local-fs.target" "network-online.target" "nss-lookup.target" ];
+        After = [
+          "local-fs.target"
+          "network-online.target"
+          "nss-lookup.target"
+        ];
       };
 
       serviceConfig = {
@@ -130,31 +142,41 @@ in {
         Group = cfg.group;
         PrivateTmp = false;
 
-        ExecStartPre = let
-          format = pkgs.formats.ini { };
-          settingsFile = format.generate "qBittorrent.conf" cfg.settings;
-          configPath = "${cfg.profile}/qBittorrent/config/qBittorrent.conf";
-          start-pre-script = pkgs.writeShellScript "qbittorrent-start-pre" ''
-            set -ue
-                      
-            # Create data directory if it doesn't exist
-            if ! test -d ${cfg.profile}; then
-              echo "Creating initial qBittorrent data directory in: ${cfg.profile}"
-              install -d -m 0755 -o ${cfg.user} -g ${cfg.group} ${cfg.profile}/qBittorrent/config/
-            fi
+        ExecStartPre =
+          let
+            format = pkgs.formats.ini { };
+            settingsFile = format.generate "qBittorrent.conf" cfg.settings;
+            configPath = "${cfg.profile}/qBittorrent/config/qBittorrent.conf";
+            start-pre-script = pkgs.writeShellScript "qbittorrent-start-pre" ''
+              set -ue
 
-            # Force-apply configuration.
-            ${pkgs.crudini}/bin/crudini --ini-options=nospace --merge ${configPath} <${settingsFile}
-            
-            # Generate password hash from password and apply to configuration
-            hash=$(${pkgs.python3}/bin/python3 ${qbittorrent_hash} "test")
-            ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Password_PBKDF2" "\"$hash\""
-            ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Username" "\"${cfg.username}\""
+              # Create data directory if it doesn't exist
+              if ! test -d ${cfg.profile}; then
+                echo "Creating initial qBittorrent data directory in: ${cfg.profile}"
+                install -d -m 0755 -o ${cfg.user} -g ${cfg.group} ${cfg.profile}/qBittorrent/config/
+              fi
 
-            #chown -R  ${cfg.user}:${cfg.group} ${cfg.profile}/
-          '';
-          # Requires full permissions to create data directory, hence the "!".
-        in "!${start-pre-script}";
+              # Force-apply configuration.
+              ${pkgs.crudini}/bin/crudini --ini-options=nospace --merge ${configPath} <${settingsFile}
+
+              # Generate password hash from password and apply to configuration
+              hash=$(${pkgs.python3}/bin/python3 ${qbittorrent_hash} ${cfg.password})
+              ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Password_PBKDF2" "\"$hash\""
+              ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\Username" "\"${cfg.username}\""
+
+              # Install Vuetorrent Webui
+              [ ! -f /var/lib/qBittorrent/qBittorrent/vuetorrent.zip ] && \
+              ${pkgs.curl}/bin/curl -JLo ${cfg.profile}/qBittorrent/vuetorrent.zip "https://github.com/VueTorrent/VueTorrent/releases/latest/download/vuetorrent.zip"
+              [ ! -d /var/lib/qBittorrent/qBittorrent/vuetorrent ] && \
+              ${pkgs.unzip}/bin/unzip ${cfg.profile}/qBittorrent/vuetorrent.zip -d ${cfg.profile}/qBittorrent/
+              ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\AlternativeUIEnabled" "true"
+              ${pkgs.crudini}/bin/crudini --set ${configPath} Preferences "WebUI\\RootFolder" "/var/lib/qBittorrent/qBittorrent/vuetorrent"
+
+              chown -R  ${cfg.user}:${cfg.group} ${cfg.profile}/
+            '';
+            # Requires full permissions to create data directory, hence the "!".
+          in
+          "!${start-pre-script}";
         ExecStart = pkgs.writeShellScript "qbittorrent-start" ''
           exec ${cfg.package}/bin/qbittorrent-nox --webui-port=${toString cfg.port} --profile=${cfg.profile}
         '';
@@ -164,26 +186,10 @@ in {
         IOSchedulingClass = "idle";
         IOSchedulingPriority = "7";
       };
-
       wantedBy = [ "multi-user.target" ];
     };
-    systemd.services.vuetorrent = {
-      description = "Install Vuetorrent";
-      after = [ "qbittorrent-nox.service" ];
-      wantedBy = [ "multi-user.target" ];
 
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = false;
-        ExecStart = pkgs.writeShellScript "Install Vuetorrent" ''
-          [ -f /var/lib/qBittorrent/qBittorrent/vuetorrent.zip ] && exit 0
-          ${pkgs.curl}/bin/curl -JLo ${cfg.profile}/qBittorrent/vuetorrent.zip "https://github.com/VueTorrent/VueTorrent/releases/latest/download/vuetorrent.zip"  && \n 
-          ${pkgs.unzip}/bin/unzip ${cfg.profile}/qBittorrent/vuetorrent.zip -d ${cfg.profile}/qBittorrent/ &&  chown -R ${cfg.user}:${cfg.group} ${cfg.profile}/qBittorrent/vuetorrent '';
-      };
-    };
-    
-    networking.firewall =
-      lib.mkIf cfg.openFirewall { allowedTCPPorts = [ cfg.port ]; };
+    networking.firewall = lib.mkIf cfg.openFirewall { allowedTCPPorts = [ cfg.port ]; };
 
   };
 }

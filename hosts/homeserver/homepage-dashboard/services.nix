@@ -14,7 +14,7 @@
                 toString config.services.jellyseerr.port
               }";
             key =
-              "MTc1MDg3OTYyMjEwM2Y5Njg4ZWVkLWYyNWMtNDdkYi1hYTkzLTM5MzNlMGFjNmM1YQ==";
+              "MTc1MjY5NjgxNjU5MmVjNmQwZDY5LTdhMDMtNGE5Yy05NWMzLTMyMjFjN2FhMzc4NQ==";
           };
         };
       }

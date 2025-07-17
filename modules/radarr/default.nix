@@ -57,11 +57,17 @@ in {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";
-        RemainAfterExit = false;
+        RemainAfterExit = true;
         #will update along the way when the need arises
         #settings.server.port for port option
         # ugly expansion within data portion of api call, should use jq ?
         ExecStart = pkgs.writeShellScript "Initialize Radarr" ''
+
+          until ${pkgs.curl}/bin/curl -s -X GET "http://localhost:7878/api/v3/system/status" -H 'accept: application/json'
+          do
+          sleep 1
+          done
+
           ${pkgs.curl}/bin/curl -X 'PUT' 'http://localhost:7878/api/v3/config/host' \
             -H "X-Api-Key: $(${cfg.init.apikey})" \
             -H "Host: localhost:7878" \
@@ -111,33 +117,31 @@ in {
             -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
             -H "Content-Type: application/json" \
             -d '{"path":"'"${cfg.init.rootPath}"'"}'
-              ${
-                lib.optionalString cfg.init.torrent.enable ''
-                  ${pkgs.curl}/bin/curl -X POST http://localhost:7878/api/v3/downloadclient \
-                    -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
-                    -H "Content-Type: application/json" \
-                    -d '{
-                      "enable": true,
-                      "name": "qBittorrent",
-                      "protocol": "torrent",
-                      "implementation": "QBittorrent",
-                      "configContract": "QBittorrentSettings",
-                      "fields": [
-                        { "name": "host", "value": "localhost" },
-                        { "name": "port", "value": 8080 },
-                        { "name": "useSsl", "value": false },
-                        { "name": "urlBase", "value": "" },
-                        { "name": "username", "value": "'"${config.services.qbittorrent.username}"'"},
-                        { "name": "password", "value": "'"${config.services.qbittorrent.password}"'"},
-                        { "name": "category", "value": "radarr" },
-                        { "name": "recentTvPriority", "value": 1 },
-                        { "name": "olderTvPriority", "value": 1 },
-                        { "name": "addPaused", "value": false }],
-                      "priority": 1,
-                      "removeCompletedDownloads": true,
-                      "removeFailedDownloads": true }'
-                ''
-              }
+          ${lib.optionalString cfg.init.torrent.enable ''
+            ${pkgs.curl}/bin/curl -X POST http://localhost:7878/api/v3/downloadclient \
+              -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "enable": true,
+                "name": "qBittorrent",
+                "protocol": "torrent",
+                "implementation": "QBittorrent",
+                "configContract": "QBittorrentSettings",
+                "fields": [
+                  { "name": "host", "value": "localhost" },
+                  { "name": "port", "value": 8080 },
+                  { "name": "useSsl", "value": false },
+                  { "name": "urlBase", "value": "" },
+                  { "name": "username", "value": "'"${config.services.qbittorrent.username}"'"},
+                  { "name": "password", "value": "'"${config.services.qbittorrent.password}"'"},
+                  { "name": "category", "value": "radarr" },
+                  { "name": "recentTvPriority", "value": 1 },
+                  { "name": "olderTvPriority", "value": 1 },
+                  { "name": "addPaused", "value": false }],
+                "priority": 1,
+                "removeCompletedDownloads": true,
+                "removeFailedDownloads": true }'
+          ''}
         '';
 
       };

@@ -115,7 +115,6 @@ in {
 
     systemd.services.qbittorrent = {
       enable = true;
-
       unitConfig = {
         Wants = [ "network-online.target" ];
         After =

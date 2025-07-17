@@ -57,11 +57,17 @@ in {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";
-        RemainAfterExit = false;
+        RemainAfterExit = true;
         #will update along the way when the need arises
         #settings.server.port for port option
         # ugly expansion within data portion of api call, should use jq ?
         ExecStart = pkgs.writeShellScript "Initialize Sonarr" ''
+
+          until ${pkgs.curl}/bin/curl -s -X GET "http://localhost:8989/api/v3/system/status" -H 'accept: application/json'
+          do
+          sleep 1
+          done
+
           ${pkgs.curl}/bin/curl -X 'PUT' 'http://localhost:8989/api/v3/config/host' \
             -H "X-Api-Key: $(${cfg.init.apikey})" \
             -H "Host: localhost:8989" \

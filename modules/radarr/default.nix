@@ -1,17 +1,23 @@
-{ config, options, lib, pkgs, ... }:
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
   cfg = config.services.radarr;
 
-in {
+in
+{
   options.services.radarr = {
     init = {
       enable = lib.mkEnableOption "Initializing Radarr Authentication";
 
       apikey = lib.mkOption {
-        description =
-          "Radarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
+        description = "Radarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
         type = lib.types.str;
         default = "cat ${config.sops.secrets."radarr/apikey".path}";
       };
@@ -35,8 +41,7 @@ in {
       };
 
       required = lib.mkOption {
-        description =
-          "Authentication required for, enabled disabledForLocalAdresses";
+        description = "Authentication required for, enabled disabledForLocalAdresses";
         type = lib.types.str;
         default = "disabledForLocalAddresses";
       };
@@ -148,4 +153,3 @@ in {
     };
   };
 }
-

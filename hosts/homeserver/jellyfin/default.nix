@@ -1,4 +1,9 @@
-{ config, options, inputs, ... }:
+{
+  config,
+  options,
+  inputs,
+  ...
+}:
 
 {
 
@@ -9,7 +14,10 @@
     "jellyfin/benito/password" = { };
   };
 
-  users.users.jellyfin.extraGroups = [ "video" "render" ];
+  users.users.jellyfin.extraGroups = [
+    "video"
+    "render"
+  ];
 
   services.declarative-jellyfin = {
     # Move metadate to statefull storage

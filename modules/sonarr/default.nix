@@ -1,17 +1,23 @@
-{ config, options, lib, pkgs, ... }:
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
   cfg = config.services.sonarr;
 
-in {
+in
+{
   options.services.sonarr = {
     init = {
       enable = lib.mkEnableOption "Initializing Sonarr Authentication";
 
       apikey = lib.mkOption {
-        description =
-          "Sonarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
+        description = "Sonarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
         type = lib.types.str;
         default = "cat ${config.sops.secrets."sonarr/apikey".path}";
       };
@@ -35,8 +41,7 @@ in {
       };
 
       required = lib.mkOption {
-        description =
-          "Authentication required for, enabled disabledForLocalAdresses";
+        description = "Authentication required for, enabled disabledForLocalAdresses";
         type = lib.types.str;
         default = "disabledForLocalAddresses";
       };
@@ -149,4 +154,3 @@ in {
     };
   };
 }
-

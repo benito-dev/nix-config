@@ -1,4 +1,10 @@
-{ config, options, lib, pkgs, ... }:
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   services.qbittorrent = {
@@ -47,7 +53,9 @@
         "Session\\AlternativeGlobalUPSpeedLimit" = "50";
       };
 
-      Core = { "AutoDeleteAddedTorrentFile" = "Always"; };
+      Core = {
+        "AutoDeleteAddedTorrentFile" = "Always";
+      };
 
       Preferences = {
         "WebUI\\AuthSubnetWhitelist" = "192.168.0.0/24";
@@ -59,4 +67,3 @@
     };
   };
 }
-

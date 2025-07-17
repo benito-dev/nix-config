@@ -20,15 +20,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
-    nixosConfigurations.homeserver = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        ./hosts/homeserver/configuration.nix
-        inputs.declarative-jellyfin.nixosModules.default
-        inputs.sops-nix.nixosModules.sops
-      ];
+  outputs =
+    { self, nixpkgs, ... }@inputs:
+    {
+      nixosConfigurations.homeserver = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/homeserver/configuration.nix
+          inputs.declarative-jellyfin.nixosModules.default
+          inputs.sops-nix.nixosModules.sops
+        ];
+      };
     };
-  };
 }

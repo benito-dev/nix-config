@@ -1,0 +1,12 @@
+    text = ''
+      # Create samba password for user
+      echo -e "samba-password\nsamba-password" | ${pkgs.samba}/bin/smbpasswd -a -s sambauser
+
+      # Alternative: Read from a file
+      # if [ -f /etc/samba/sambauser.passwd ]; then
+      #   cat /etc/samba/sambauser.passwd | ${pkgs.samba}/bin/smbpasswd -a -s sambauser
+      # fi
+    '';
+    deps = [ "users" ];    system.activationScripts.sambapw = {
+
+  };

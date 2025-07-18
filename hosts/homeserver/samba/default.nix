@@ -2,7 +2,7 @@
 {
   services.samba = {
     enable = true;
-    securityType = "user";
+    settings.global.securityType = "user";
     openFirewall = true;
     settings = {
       global = {
@@ -16,17 +16,17 @@
         "max log size" = "50";
         "passdb backend" = "tdbsam";
         "map to guest" = "bad user";
-        "private" = {
-          "valid users" = "benito";
-          "comment" = "Main data share";
-          "path" = "/mnt/";
-          "browseable" = "yes";
-          "read only" = "no";
-          "guest ok" = "no";
-          "create mask" = "0644";
-          "directory mask" = "0755";
-          "force group" = "media";
-        };
+      };
+      "private" = {
+        "valid users" = "benito";
+        "comment" = "Main data share";
+        "path" = "/mnt/test";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force group" = "media";
       };
     };
   };
@@ -37,7 +37,7 @@
 
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     openFirewall = true;
     publish = {
       enable = true;

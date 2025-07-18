@@ -40,6 +40,7 @@
     useDHCP = false;
     dhcpcd.enable = false;
     defaultGateway = "192.168.0.1";
+    hostId = "37740ce0";
     nameservers = [
       "195.130.131.1"
       "195.130.130.1"

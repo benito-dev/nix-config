@@ -15,6 +15,8 @@
     ./download
     ./homepage-dashboard
     ./jellyfin
+    ./zfs
+    ./samba
 
   ];
 

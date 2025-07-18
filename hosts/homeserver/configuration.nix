@@ -169,20 +169,6 @@
 
   # Samba Mount
 
-  fileSystems."/mnt/data" = {
-    device = "//192.168.0.101/data";
-    fsType = "cifs";
-    options =
-      let
-        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-      in
-      [
-        "${automount_opts},credentials=${
-          config.sops.secrets."cifs/credentials".path
-        },uid=benito,gid=media,dir_mode=0770,file_mode=0770"
-      ];
-  };
-
   system.stateVersion = "25.05";
 
 }

@@ -19,7 +19,40 @@
       "data" = {
         "valid users" = "benito";
         "comment" = "Main data share";
-        "path" = "/mnt/test";
+        "path" = "/mnt/data";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force group" = "media";
+      };
+        "media" = {
+        "valid users" = "benito";
+        "comment" = "Main data share";
+        "path" = "/mnt/media";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force group" = "media";
+      };
+        "download" = {
+        "valid users" = "benito";
+        "comment" = "Main data share";
+        "path" = "/mnt/download";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force group" = "media";
+      };
+        "document" = {
+        "valid users" = "benito";
+        "comment" = "Main data share";
+        "path" = "/mnt/document";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";

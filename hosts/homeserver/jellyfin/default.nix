@@ -35,13 +35,13 @@
       Movies = {
         enabled = true;
         contentType = "movies";
-        pathInfos = [ "/mnt/data/media/movies" ];
+        pathInfos = [ "/mnt/media/movies" ];
       };
 
       Series = {
         enabled = true;
         contentType = "tvshows";
-        pathInfos = [ "/mnt/data/media/tvshows" ];
+        pathInfos = [ "/mnt/media/tvshows" ];
       };
     };
 

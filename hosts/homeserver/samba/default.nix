@@ -2,7 +2,6 @@
 {
   services.samba = {
     enable = true;
-    settings.global.securityType = "user";
     openFirewall = true;
     settings = {
       global = {
@@ -11,13 +10,13 @@
         "server role" = "standalone server";
         "netbios name" = "nix-server";
         "security" = "user";
-        "hosts allow" = "192.168.0. 127.0.0.1 localhost";
-        "guest account" = "guest";
+        "hosts allow" = "192.168.0.177 127.0.0.1 localhost";
+        "guest account" = "nobody";
         "max log size" = "50";
         "passdb backend" = "tdbsam";
         "map to guest" = "bad user";
       };
-      "private" = {
+      "data" = {
         "valid users" = "benito";
         "comment" = "Main data share";
         "path" = "/mnt/test";
@@ -46,6 +45,8 @@
     };
   };
 
-  services.cockpit.enable = true;
-
+  services.cockpit = {
+    enable = true;
+    openFirewall = true;
+  };
 }

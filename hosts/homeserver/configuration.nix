@@ -39,16 +39,17 @@
     defaultGateway = "192.168.0.1";
     hostId = "37740ce0";
     nameservers = [
-      "195.130.131.1"
-      "195.130.130.1"
+      "195.131.130.1"
+      "1.0.0.1"
     ];
     hostName = "homeserver";
     firewall = {
       enable = true;
       allowPing = true;
     };
+    bridges."br0".interfaces = [ "enp6s0" "enp7s0" "enp8s0" "enp9s0" "enp12s0" ];
     interfaces = {
-      enp12s0.ipv4.addresses = [
+      "br0".ipv4.addresses = [
         {
           address = "192.168.0.240";
           prefixLength = 24;

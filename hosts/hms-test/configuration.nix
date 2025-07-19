@@ -15,9 +15,6 @@
     ./download
     ./homepage-dashboard
     ./jellyfin
-    ./zfs
-    ./samba
-
   ];
 
   nix.settings.experimental-features = [
@@ -27,9 +24,11 @@
 
   # Bootloader
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/nvme0n1";
+    useOSProber = true;
+  };
 
   # Network
 
@@ -43,15 +42,15 @@
       "195.130.131.1"
       "195.130.130.1"
     ];
-    hostName = "homeserver";
+    hostName = "hms-test";
     firewall = {
       enable = true;
       allowPing = true;
     };
     interfaces = {
-      enp12s0.ipv4.addresses = [
+      enp0s31f6.ipv4.addresses = [
         {
-          address = "192.168.0.240";
+          address = "192.168.0.230";
           prefixLength = 24;
         }
       ];

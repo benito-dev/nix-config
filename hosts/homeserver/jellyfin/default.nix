@@ -18,7 +18,7 @@
     "video"
     "render"
   ];
-
+  hardware.graphics.enable = true;
   services.declarative-jellyfin = {
     # Move metadate to statefull storage
     enable = true;
@@ -30,18 +30,31 @@
       serverName = "JellyNix";
       isStartupWizardCompleted = true;
     };
+    encoding = {
+      enableHardwareEncoding = true;
+      hardwareAccelerationType = "vaapi";
+      enableDecodingColorDepth10Hevc = true; # enable if your system supports
+      allowHevcEncoding = true; # enable if your system supports
+      hardwareDecodingCodecs = [ # enable the codecs your system supports
+        "h264"
+        "hevc"
+        "mpeg2video"
+        "vc1"
+        "vp9"
+      ];
+    };
 
     libraries = {
       Movies = {
         enabled = true;
         contentType = "movies";
-        pathInfos = [ "/mnt/media/movies" ];
+        pathInfos = [ "/dpool/media/movies" ];
       };
 
       Series = {
         enabled = true;
         contentType = "tvshows";
-        pathInfos = [ "/mnt/media/tvshows" ];
+        pathInfos = [ "/dpool/media/tvshows" ];
       };
     };
 

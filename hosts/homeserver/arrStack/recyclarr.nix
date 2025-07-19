@@ -234,7 +234,7 @@
               "9c11cd3f07101cdba90a2d81cf0e56b4" # LQ
               "e2315f990da2e2cbfc9fa5b7a6fcfe48" # LQ (Release Title)
               "23297a736ca77c0fc8e70f8edd7ee56c" # Upscaled
-              "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
+
 
             ];
             assign_scores_to = [ { name = "Main"; } ];
@@ -450,7 +450,6 @@
               "e204b80c87be9497a8a6eaff48f72905" # LQ (Release Title)
               "712d74cd88bceb883ee32f773656b1f5" # Sing-Along Versions
               "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
-              "dc98083864ea246d05a42df0d05f81cc" # x265 (HD)
               "712d74cd88bceb883ee32f773656b1f5" # Sing along
               "cae4ca30163749b891686f95532519bd" # Av1
               "923b6abef9b17f937fab56cfcf89e1f1" # DV

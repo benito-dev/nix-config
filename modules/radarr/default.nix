@@ -48,7 +48,7 @@ in
       rootPath = lib.mkOption {
         description = "Path to root path";
         type = lib.types.path;
-        default = "/mnt/media/movies";
+        default = "/dpool/media/movies";
       };
       torrent.enable = lib.mkEnableOption "Initializing qBitorrent";
     };

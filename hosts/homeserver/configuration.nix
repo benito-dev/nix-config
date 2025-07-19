@@ -17,7 +17,6 @@
     ./jellyfin
     ./zfs
     ./samba
-
   ];
 
   nix.settings.experimental-features = [
@@ -118,7 +117,6 @@
     nix-ld
     git
     sops
-    cifs-utils
     age
     python3
     nixfmt-tree

@@ -18,7 +18,7 @@
         "Session\\AddTorrentStopped" = "false";
         "Session\\BTProtocol" = "TCP";
         "Session\\BandwidthSchedulerEnabled" = "true";
-        "Session\\DefaultSavePath" = "/mnt/download/torrent/completed";
+        "Session\\DefaultSavePath" = "/dpool/download/torrent/completed";
         "Session\\DisableAutoTMMByDefault" = "false";
         "Session\\DisableAutoTMMTriggers\\CategorySavePathChanged" = "false";
         "Session\\DisableAutoTMMTriggers\\DefaultSavePathChanged" = "false";
@@ -39,7 +39,7 @@
         "Session\\QueueingSystemEnabled" = "true";
         "Session\\SSL\\Port" = "29544";
         "Session\\ShareLimitAction" = "Stop";
-        "Session\\TempPath" = "/mnt/download/torrent/incoming";
+        "Session\\TempPath" = "/dpool/download/torrent/incoming";
         "Session\\TempPathEnabled" = "true";
         "Session\\uTPRateLimited" = "true";
         "Connection\\GlobalDLLimitAlt" = "83008";

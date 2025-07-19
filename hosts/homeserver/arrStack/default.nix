@@ -39,6 +39,9 @@
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
   };
 
+  services.flaresolverr.enable=true;
+  services.flaresolverr.openFirewall= true;
+
   services.jellyseerr = {
     enable = true;
     openFirewall = true;

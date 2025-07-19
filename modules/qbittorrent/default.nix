@@ -137,11 +137,10 @@ in
 
       serviceConfig = {
         Type = "simple";
-
         User = cfg.user;
         Group = cfg.group;
         PrivateTmp = false;
-
+        umask = "006" ;
         ExecStartPre =
           let
             format = pkgs.formats.ini { };

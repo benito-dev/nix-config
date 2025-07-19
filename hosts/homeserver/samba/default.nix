@@ -16,10 +16,9 @@
         "passdb backend" = "tdbsam";
         "map to guest" = "bad user";
       };
-      "data" = {
+      "Data" = {
         "valid users" = "benito";
-        "comment" = "Main data share";
-        "path" = "/mnt/data";
+        "path" = "/dpool/data";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
@@ -27,10 +26,9 @@
         "directory mask" = "0755";
         "force group" = "media";
       };
-        "media" = {
+        "Media" = {
         "valid users" = "benito";
-        "comment" = "Main data share";
-        "path" = "/mnt/media";
+        "path" = "/dpool/media";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
@@ -38,10 +36,9 @@
         "directory mask" = "0755";
         "force group" = "media";
       };
-        "download" = {
+        "Download" = {
         "valid users" = "benito";
-        "comment" = "Main data share";
-        "path" = "/mnt/download";
+        "path" = "/dpool/download";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
@@ -49,10 +46,9 @@
         "directory mask" = "0755";
         "force group" = "media";
       };
-        "document" = {
+        "Document" = {
         "valid users" = "benito";
-        "comment" = "Main data share";
-        "path" = "/mnt/document";
+        "path" = "/dpool/document";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";

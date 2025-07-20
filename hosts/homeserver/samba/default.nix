@@ -10,7 +10,7 @@
         "server role" = "standalone server";
         "netbios name" = "nix-server";
         "security" = "user";
-        "hosts allow" = "192.168.0.240 1982.168.0.177 127.0.0.1 localhost";
+        "hosts allow" = "192.168.0.1/24 127.0.0.1 localhost";
         "guest account" = "nobody";
         "max log size" = "50";
         "passdb backend" = "tdbsam";

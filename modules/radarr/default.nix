@@ -19,7 +19,7 @@ in
       apikey = lib.mkOption {
         description = "Radarr api key, can be initialized via services.sonarr.environmentFiles, defaults to sops secret";
         type = lib.types.str;
-        default = "cat ${config.sops.secrets."radarr/apikey".path}";
+        default = "$(cat ${config.sops.secrets."radarr/apikey".path})";
       };
 
       username = lib.mkOption {
@@ -68,19 +68,19 @@ in
         # ugly expansion within data portion of api call, should use jq ?
         ExecStart = pkgs.writeShellScript "Initialize Radarr" ''
 
-          until ${pkgs.curl}/bin/curl -s -X GET "http://localhost:7878/api/v3/system/status" -H 'accept: application/json'
+          until ${pkgs.curl}/bin/curl -s -X GET "http://localhost:${toString cfg.settings.server.port}/api/v3/system/status" -H 'accept: application/json'
           do
           sleep 1
           done
 
-          ${pkgs.curl}/bin/curl -X 'PUT' 'http://localhost:7878/api/v3/config/host' \
-            -H "X-Api-Key: $(${cfg.init.apikey})" \
-            -H "Host: localhost:7878" \
+          ${pkgs.curl}/bin/curl -X 'PUT' "http://localhost:${toString cfg.settings.server.port}/api/v3/config/host" \
+            -H "X-Api-Key: ${cfg.init.apikey}" \
+            -H "Host: localhost:${toString cfg.settings.server.port}" \
             -H "Content-Type: application/json" \
             -d  '{
               "bindAddress": "*",
-              "port": 7878,
-              "sslPort": 7878,
+              "port": '${toString cfg.settings.server.port}',
+              "sslPort": '${toString cfg.settings.server.port}' ,
               "enableSsl": false,
               "launchBrowser": true,
               "authenticationMethod": "'"${cfg.init.method}"'",
@@ -116,15 +116,16 @@ in
               "backupRetention": 28,
               "trustCgnatIpAddresses": false,
               "id": 1
-            }'   
+            }'
 
-          ${pkgs.curl}/bin/curl -X POST http://localhost:7878/api/v3/rootFolder \
-            -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
+          ${pkgs.curl}/bin/curl -X POST "http://localhost:${toString cfg.settings.server.port}/api/v3/rootFolder" \
+            -H "X-Api-Key:${cfg.init.apikey}" \
             -H "Content-Type: application/json" \
             -d '{"path":"'"${cfg.init.rootPath}"'"}'
+
           ${lib.optionalString cfg.init.torrent.enable ''
-            ${pkgs.curl}/bin/curl -X POST http://localhost:7878/api/v3/downloadclient \
-              -H "X-Api-Key:$(cat ${cfg.init.apikey})" \
+            ${pkgs.curl}/bin/curl -X POST "http://localhost:${toString cfg.settings.server.port}/api/v3/downloadclient" \
+              -H "X-Api-Key:${cfg.init.apikey}" \
               -H "Content-Type: application/json" \
               -d '{
                 "enable": true,
@@ -134,7 +135,7 @@ in
                 "configContract": "QBittorrentSettings",
                 "fields": [
                   { "name": "host", "value": "localhost" },
-                  { "name": "port", "value": 8080 },
+                  { "name": "port", "value": '${toString config.services.qbittorrent.port}' },
                   { "name": "useSsl", "value": false },
                   { "name": "urlBase", "value": "" },
                   { "name": "username", "value": "'"${config.services.qbittorrent.username}"'"},

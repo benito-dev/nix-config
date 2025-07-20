@@ -85,7 +85,7 @@ in
     };
     password = lib.mkOption {
       type = lib.types.str;
-      default = "cat ${config.sops.secrets."qbittorrent/password".path}";
+      default = "$(cat ${config.sops.secrets."qbittorrent/password".path})";
       description = "Add vuetorrent webui to qBittorrent";
     };
 
@@ -140,7 +140,7 @@ in
         User = cfg.user;
         Group = cfg.group;
         PrivateTmp = false;
-        umask = "006";
+        UMask = "006";
         ExecStartPre =
           let
             format = pkgs.formats.ini { };

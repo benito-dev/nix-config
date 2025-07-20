@@ -16,6 +16,9 @@
     "radarr/username" = { };
     "radarr/password" = { };
     "radarr/ENV/apikey" = { };
+    "prowlarr/apikey" = { };
+    "prowlarr/username" = { };
+    "prowlarr/password" = { };
     "prowlarr/ENV/apikey" = { };
   };
 
@@ -40,7 +43,7 @@
   services.prowlarr = {
     enable = true;
     openFirewall = true;
-    #init.enable = true;
+    init.enable = true;
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
   };
 

@@ -12,6 +12,7 @@
     ./hardware-configuration.nix
     ../common/homeserver
     ../../modules/homeserver.nix
+    ./test.nix
 
   ];
 

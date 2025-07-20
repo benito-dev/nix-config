@@ -1,4 +1,4 @@
-{ config, options, ... }:
+{ config, options,pkgs, ... }:
 
 {
   imports = [ ./recyclarr.nix ];
@@ -37,6 +37,11 @@
     openFirewall = true;
     #init.enable = true;
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
+  };
+
+  services.flaresolverr = {
+    enable = true;
+    openFirewall = true;
   };
 
   services.jellyseerr = {

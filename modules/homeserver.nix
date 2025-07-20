@@ -5,5 +5,6 @@
     ./qbittorrent
     ./radarr
     ./jellyseerr
+    ./docker
   ];
 }

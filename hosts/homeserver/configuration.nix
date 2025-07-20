@@ -11,10 +11,7 @@
 
     ./hardware-configuration.nix
     ../../modules/homeserver.nix
-    ./arrStack
-    ./download
-    ./homepage-dashboard
-    ./jellyfin
+    ../common/homeserver
     ./zfs
     ./samba
   ];
@@ -33,13 +30,12 @@
   # Network
 
   networking = {
-    networkmanager.enable = true;
     useDHCP = false;
     dhcpcd.enable = false;
     defaultGateway = "192.168.0.1";
     hostId = "37740ce0";
     nameservers = [
-      "195.131.130.1"
+      "1.1.1.1"
       "1.0.0.1"
     ];
     hostName = "homeserver";
@@ -87,6 +83,7 @@
       "networkmanager"
       "wheel"
       "media"
+      "docker"
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL benito@tux"
@@ -121,9 +118,7 @@
     age
     python3
     nixfmt-tree
-  ];
-
-  nixpkgs.config.allowUnfree = true;
+  ];  nixpkgs.config.allowUnfree = true;
   programs = {
     nix-ld.enable = true;
     ssh = {
@@ -144,6 +139,8 @@
       };
     };
   };
+
+  extraServices.podman.enable = true;
 
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;

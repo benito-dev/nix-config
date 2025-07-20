@@ -26,7 +26,7 @@
         "directory mask" = "0755";
         "force group" = "media";
       };
-        "Media" = {
+      "Media" = {
         "valid users" = "benito";
         "path" = "/dpool/media";
         "browseable" = "yes";
@@ -36,7 +36,7 @@
         "directory mask" = "0755";
         "force group" = "media";
       };
-        "Download" = {
+      "Download" = {
         "valid users" = "benito";
         "path" = "/dpool/download";
         "browseable" = "yes";
@@ -46,7 +46,7 @@
         "directory mask" = "0755";
         "force group" = "media";
       };
-        "Document" = {
+      "Document" = {
         "valid users" = "benito";
         "path" = "/dpool/document";
         "browseable" = "yes";

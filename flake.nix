@@ -32,7 +32,7 @@
           inputs.sops-nix.nixosModules.sops
         ];
       };
-        nixosConfigurations."hms-test" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."hms-test" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [

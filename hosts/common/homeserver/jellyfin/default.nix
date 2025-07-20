@@ -35,7 +35,8 @@
       hardwareAccelerationType = "vaapi";
       enableDecodingColorDepth10Hevc = true; # enable if your system supports
       allowHevcEncoding = true; # enable if your system supports
-      hardwareDecodingCodecs = [ # enable the codecs your system supports
+      hardwareDecodingCodecs = [
+        # enable the codecs your system supports
         "h264"
         "hevc"
         "mpeg2video"

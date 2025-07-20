@@ -140,7 +140,7 @@ in
         User = cfg.user;
         Group = cfg.group;
         PrivateTmp = false;
-        umask = "006" ;
+        umask = "006";
         ExecStartPre =
           let
             format = pkgs.formats.ini { };

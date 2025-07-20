@@ -235,7 +235,6 @@
               "e2315f990da2e2cbfc9fa5b7a6fcfe48" # LQ (Release Title)
               "23297a736ca77c0fc8e70f8edd7ee56c" # Upscaled
 
-
             ];
             assign_scores_to = [ { name = "Main"; } ];
           }

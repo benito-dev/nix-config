@@ -7,6 +7,10 @@
 }:
 
 {
+  sops.secrets = {
+    "qbittorrent/username" = { };
+    "qbittorrent/password" = { };
+  };
   services.qbittorrent = {
     enable = true;
     openFirewall = true;

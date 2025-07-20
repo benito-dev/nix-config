@@ -44,10 +44,22 @@
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
   };
 
-  services.flaresolverr = {
-    enable = true;
-    openFirewall = true;
+  extraServices.podman.enable = true;
+  virtualisation.oci-containers = {
+    containers = {
+      "flaresolverr" = {
+        image = "ghcr.io/flaresolverr/flaresolverr:latest";
+        environment = {
+          LOG_LEVEL = "info";
+          LOG_HTML = "false";
+          CAPTCHA_SOLVER = "none";
+          TZ = "Europe/Brussels";
+        };
+        ports = [ "8191:8191" ];
+      };
+    };
   };
+  networking.firewall.allowedTCPPorts = [ 8191 ];
 
   services.jellyseerr = {
     enable = true;

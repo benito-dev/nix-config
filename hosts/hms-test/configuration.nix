@@ -60,7 +60,6 @@
 
   # Samba Mount
 
-
   fileSystems."/dpool/media" = {
     device = "//192.168.0.240/media";
     fsType = "cifs";

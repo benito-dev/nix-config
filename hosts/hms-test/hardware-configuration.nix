@@ -15,16 +15,6 @@
       fsType = "ext4";
     };
 
-  fileSystems."/dpool/download" =
-    { device = "systemd-1";
-      fsType = "autofs";
-    };
-
-  fileSystems."/dpool/media" =
-    { device = "systemd-1";
-      fsType = "autofs";
-    };
-
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

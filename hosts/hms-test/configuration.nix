@@ -60,13 +60,9 @@
 
   # Samba Mount
 
-  systemd.tmpfiles.rules = [
-    "d /dpool/media 0770 benito media - -"
-    "d /dpool/download 0770 benito media - -"
-  ];
 
   fileSystems."/dpool/media" = {
-    device = "//192.168.0.240/data";
+    device = "//192.168.0.240/media";
     fsType = "cifs";
     options =
       let
@@ -80,7 +76,7 @@
   };
 
   fileSystems."/dpool/download" = {
-    device = "//192.168.0.240/data";
+    device = "//192.168.0.240/download";
     fsType = "cifs";
     options =
       let

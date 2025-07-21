@@ -15,7 +15,6 @@ in
   options.services.jellyseerr.init.enable = lib.mkEnableOption "Initializing Jellyseerr";
 
   config = lib.mkIf (cfg.enable && cfg.init.enable) {
-    #add check if already exist
     systemd.services.initJellyseerr = {
       description = "Initialize Jellyseerr";
       after = [
@@ -58,7 +57,7 @@ in
            "urlBase":"",
            "email": "test@gmail.com",
            "serverType": 2
-           }' && cat cookie.txt > $cookie && cookie_sid=$(${pkgs.gawk}/bin/awk '/connect\.sid/ {print $7}' $cookie) 
+           }' && cat cookie.txt > $cookie && cookie_sid=$(${pkgs.gawk}/bin/awk '/connect\.sid/ {print $7}' $cookie)
 
            library_id=$(${pkgs.curl}/bin/curl -s -X 'GET' 'http://localhost:${port}/api/v1/settings/jellyfin/library?sync=sync&enable=enable' -H 'Content-Type: application/json' -H "Cookie: connect.sid=$cookie_sid")
 
@@ -75,7 +74,7 @@ in
              "urlBase":"",
              "externalHostname":"",
              "jellyfinForgotPasswordUrl":"",
-             "apiKey":"'"$(cat ${config.sops.secrets."jellyfin/apikey".path})"'" 
+             "apiKey":"'"$(cat ${config.sops.secrets."jellyfin/apikey".path})"'"
            }'
 
           [ ! $(${pkgs.curl}/bin/curl -s -X 'GET' "http://localhost:${port}/api/v1/settings/radarr/" \
@@ -101,7 +100,7 @@ in
              "syncEnabled":true,
              "preventSearch":false,
              "tagRequests":false
-           }' 
+           }'
 
           [ ! $(${pkgs.curl}/bin/curl -s -X 'GET' "http://localhost:${port}/api/v1/settings/sonarr/" \
            -H 'accept: application/json' \
@@ -129,7 +128,7 @@ in
              "syncEnabled":true,
              "preventSearch":false,
              "tagRequests":false
-           }' 
+           }'
         '';
       };
     };

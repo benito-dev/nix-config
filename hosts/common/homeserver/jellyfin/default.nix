@@ -17,10 +17,11 @@
   users.users.jellyfin.extraGroups = [
     "video"
     "render"
+    "apps"
   ];
   hardware.graphics.enable = true;
   services.declarative-jellyfin = {
-    # Move metadate to statefull storage
+    # Move metadata to zfs raid
     enable = true;
     serverId = "9069974d38f842ddad31cd6bf88180c4";
     group = "media";
@@ -33,10 +34,9 @@
     encoding = {
       enableHardwareEncoding = true;
       hardwareAccelerationType = "vaapi";
-      enableDecodingColorDepth10Hevc = true; # enable if your system supports
-      allowHevcEncoding = true; # enable if your system supports
+      enableDecodingColorDepth10Hevc = true;
+      allowHevcEncoding = true;
       hardwareDecodingCodecs = [
-        # enable the codecs your system supports
         "h264"
         "hevc"
         "mpeg2video"

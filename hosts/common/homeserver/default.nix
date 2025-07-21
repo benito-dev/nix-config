@@ -34,19 +34,26 @@
 
   # Users and groups
 
-  users.users.benito = {
-    isNormalUser = true;
-    description = "benito";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "media"
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC78SVoQExVRFtie6CHRmxgB3BgYtQ/OqLqPmA1LZvDa"
-    ];
-    packages = with pkgs; [ ];
+  users = {
+    users."benito" = {
+      isNormalUser = true;
+      description = "benito";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "media"
+        "apps"
+      ];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC78SVoQExVRFtie6CHRmxgB3BgYtQ/OqLqPmA1LZvDa"
+      ];
+      packages = with pkgs; [ ];
+    };
+    groups = {
+      "media" = { };
+      "apps" = { };
+    };
   };
 
   services.getty.autologinUser = "benito";
@@ -62,8 +69,6 @@
       ];
     }
   ];
-
-  users.groups.media = { };
 
   environment.systemPackages = with pkgs; [
     nix-ld

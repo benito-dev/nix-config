@@ -30,6 +30,7 @@
     system = {
       serverName = "JellyNix";
       isStartupWizardCompleted = true;
+      metadataPath = "/dpool/data/jellyfin/metadata";
     };
     encoding = {
       enableHardwareEncoding = true;
@@ -50,12 +51,18 @@
         enabled = true;
         contentType = "movies";
         pathInfos = [ "/dpool/media/movies" ];
-      };
+        };
 
       Series = {
         enabled = true;
         contentType = "tvshows";
         pathInfos = [ "/dpool/media/tvshows" ];
+      };
+
+      Music = {
+        enabled = true;
+        contentType = "music";
+        pathInfos = [ "/dpool/media/music" ];
       };
     };
 

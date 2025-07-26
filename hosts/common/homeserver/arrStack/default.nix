@@ -20,6 +20,10 @@
     "prowlarr/username" = { };
     "prowlarr/password" = { };
     "prowlarr/ENV/apikey" = { };
+    "lidarr/ENV/apikey" = { };
+    "lidarr/apikey" = { };
+    "lidarr/username" = { };
+    "lidarr/password" = { };
   };
 
   services.sonarr = {
@@ -46,23 +50,16 @@
     init.enable = true;
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
   };
-
-  extraServices.podman.enable = true;
-  virtualisation.oci-containers = {
-    containers = {
-      "flaresolverr" = {
-        image = "ghcr.io/flaresolverr/flaresolverr:latest";
-        environment = {
-          LOG_LEVEL = "info";
-          LOG_HTML = "false";
-          CAPTCHA_SOLVER = "none";
-          TZ = "Europe/Brussels";
-        };
-        ports = [ "8191:8191" ];
-      };
-    };
-  };
+  extraServices.podman."flaresolverr".enable = true;
   networking.firewall.allowedTCPPorts = [ 8191 ];
+
+  services.lidarr = {
+    enable = true;
+    group = "media";
+    openFirewall = true;
+    environmentFiles = [ config.sops.secrets."lidarr/ENV/apikey".path ];
+    init.enable = true;
+  };
 
   services.jellyseerr = {
     enable = true;

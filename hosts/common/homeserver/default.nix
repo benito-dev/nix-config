@@ -116,8 +116,9 @@
         KbdInteractiveAuthentication = false;
       };
     };
-  };
 
+  };
+  extraServices.podman.enable = true;
   sops = {
     defaultSopsFile = ../../../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";

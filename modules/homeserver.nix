@@ -6,5 +6,6 @@
     ./jellyseerr
     ./docker
     ./prowlarr
+    ./lidarr
   ];
 }

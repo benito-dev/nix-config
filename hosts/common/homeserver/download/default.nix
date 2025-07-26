@@ -10,7 +10,9 @@
   sops.secrets = {
     "qbittorrent/username" = { };
     "qbittorrent/password" = { };
+    "slskd" = { };
   };
+  
   services.qbittorrent = {
     enable = true;
     openFirewall = true;
@@ -68,6 +70,21 @@
         "Scheduler\\end_time" = "@Variant(\\0\\0\\0\\xf\\0\\0\\0\\0)";
         "Scheduler\\start_time" = "@Variant(\\0\\0\\0\\xf\\x3\\xa5\\xd6\\x80)";
       };
+    };
+  };
+    networking.firewall.allowedTCPPorts = [ 5030 ];
+    services.slskd = {
+    enable = true;
+    openFirewall = true;
+    user = "slskd";
+    group = "media";
+    domain = null;
+    environmentFile = config.sops.secrets."slskd".path;
+    settings = {
+      web.authentication.apiKeys.key.key = "";
+      shares.directories = [ "/dpool/media/music" ];
+      directories.downloads = "/dpool/download/slskd/downloads/";
+      directories.incomplete = "/dpool/download/slskd/incomplete/";
     };
   };
 }

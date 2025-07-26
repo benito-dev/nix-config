@@ -9,8 +9,11 @@ let
   cfg = config.extraServices.podman;
 in
 {
-  options.extraServices.podman.enable = mkEnableOption "enable podman";
+  imports = [ ./containers ];
 
+  # Enable IP forwarding for container NAT
+
+  options.extraServices.podman.enable = mkEnableOption "enable podman";
   config = mkIf cfg.enable {
     virtualisation = {
       podman = {

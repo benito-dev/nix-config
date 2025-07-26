@@ -12,8 +12,6 @@
     ./hardware-configuration.nix
     ../common/homeserver
     ../../modules/homeserver.nix
-    ./test.nix
-
   ];
 
   nix.settings.experimental-features = [

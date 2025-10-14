@@ -77,6 +77,7 @@
     age
     python3
     nixfmt-tree
+    vuetorrent
   ];
 
   nixpkgs.config.allowUnfree = true;

@@ -4,7 +4,7 @@
   services.homepage-dashboard.settings = {
     layout = {
       "Media" = {
-        # header = true;
+        header = true;
         style = "row";
         columns = 4;
       };

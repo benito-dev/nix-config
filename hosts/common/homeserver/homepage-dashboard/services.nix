@@ -53,11 +53,11 @@
         }
         {
           "qBittorrent" = {
-            href = "http://192.168.0.240:${toString config.services.qbittorrent.port}";
+            href = "http://192.168.0.240:${toString config.services.qbittorrent.webuiPort}";
             icon = "qbittorrent.png";
             widget = {
               type = "qbittorrent";
-              url = "http://192.168.0.240:${toString config.services.qbittorrent.port}";
+              url = "http://192.168.0.240:${toString config.services.qbittorrent.webuiPort}";
               enableLeechProgress = true;
             };
           };

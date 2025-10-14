@@ -12,69 +12,77 @@
     "qbittorrent/password" = { };
     "slskd" = { };
   };
-  
+
   services.qbittorrent = {
     enable = true;
     openFirewall = true;
     group = "media";
-    vuetorrent = true;
-    settings = {
-
+    serverConfig = {
       BitTorrent = {
-        "Session\\AddTorrentStopped" = "false";
-        "Session\\BTProtocol" = "TCP";
-        "Session\\BandwidthSchedulerEnabled" = "true";
-        "Session\\DefaultSavePath" = "/dpool/download/torrent/completed";
-        "Session\\DisableAutoTMMByDefault" = "false";
-        "Session\\DisableAutoTMMTriggers\\CategorySavePathChanged" = "false";
-        "Session\\DisableAutoTMMTriggers\\DefaultSavePathChanged" = "false";
-        "Session\\ExcludedFileNames" = "";
-        "Session\\GlobalDLSpeedLimit" = "83008";
-        "Session\\GlobalMaxRatio" = "0";
-        "Session\\GlobalUPSpeedLimit" = "2930";
-        "Session\\IgnoreLimitsOnLAN" = "false";
-        "Session\\IncludeOverheadInLimits" = "false";
-        "Session\\LSDEnabled" = "false";
-        "Session\\MaxActiveDownloads" = "10";
-        "Session\\MaxActiveTorrents" = "20";
-        "Session\\MaxActiveUploads" = "2";
-        "Session\\MaxConnections" = "1000";
-        "Session\\MaxConnectionsPerTorrent" = "100";
-        "Session\\Port" = "63586";
-        "Session\\Preallocation" = "true";
-        "Session\\QueueingSystemEnabled" = "true";
-        "Session\\SSL\\Port" = "29544";
-        "Session\\ShareLimitAction" = "Stop";
-        "Session\\TempPath" = "/dpool/download/torrent/incoming";
-        "Session\\TempPathEnabled" = "true";
-        "Session\\uTPRateLimited" = "true";
-        "Connection\\GlobalDLLimitAlt" = "83008";
-        "Connection\\GlobalUPLimitAlt" = "1024";
-        "Scheduler\\Enabled" = "true";
-        "Scheduler\\start_time" = "0";
-        "Scheduler\\end_time" = "1020";
-        "Scheduler\\days" = "1234567";
-        "Session\\UseAlternativeGlobalSpeedLimit" = "true";
-        "Session\\AlternativeGlobalDLSpeedLimit" = "83008";
-        "Session\\AlternativeGlobalUPSpeedLimit" = "50";
+        Session = {
+          AddTorrentStopped = false;
+          BandwidthSchedulerEnabled = true;
+          DefaultSavePath = "/dpool/download/torrent/completed";
+          DisableAutoTMMByDefault = false;
+          ExcludedFileNames = "";
+          GlobalDLSpeedLimit = "83008";
+          GlobalMaxRatio = "0";
+          GlobalUPSpeedLimit = "2930";
+          IgnoreLimitsOnLAN = false;
+          IncludeOverheadInLimits = false;
+          LSDEnabled = false;
+          MaxActiveDownloads = "5";
+          MaxActiveTorrents = "5";
+          MaxActiveUploads = "2";
+          MaxConnections = "250";
+          MaxConnectionsPerTorrent = "50";
+          Port = "63586";
+          Preallocation = true;
+          QueueingSystemEnabled = true;
+          ShareLimitAction = "Stop";
+          TempPath = "/dpool/download/torrent/incoming";
+          TempPathEnabled = true;
+          uTPRateLimited = true;
+          UseAlternativeGlobalSpeedLimit = true;
+          AlternativeGlobalDLSpeedLimit = "83008";
+          AlternativeGlobalUPSpeedLimit = "50";
+        };
+        connection = {
+          GlobalDLLimitAlt = "83008";
+          GlobalUPLimitAlt = "1024";
+        };
+        Scheduler = {
+          Enabled = "true";
+          start_time = "0";
+          end_time = "1020";
+          days = "1234567";
+        };
       };
 
       Core = {
-        "AutoDeleteAddedTorrentFile" = "Always";
+        AutoDeleteAddedTorrentFile = "Always";
       };
 
       Preferences = {
-        "WebUI\\AuthSubnetWhitelist" = "192.168.0.0/24";
-        "WebUI\\AuthSubnetWhitelistEnabled" = "true";
-        "WebUI\\LocalHostAuth" = "false";
-        "Scheduler\\end_time" = "@Variant(\\0\\0\\0\\xf\\0\\0\\0\\0)";
-        "Scheduler\\start_time" = "@Variant(\\0\\0\\0\\xf\\x3\\xa5\\xd6\\x80)";
+        WebUI = {
+          user = "$(cat ${config.sops.secrets."qbittorrent/username".path})";
+          Password_PBKDF2 = "cRbEJViCltS1XgJ0KxR6ig==:gR1mSRs6XFivZDwtNo0mregop+DB0PheaA7abFtdfo9idt/EF1xTNgnAx+cAqQmfxcEdQReLjIckbGXGofryqA==";
+          AuthSubnetWhitelist = "192.168.0.0/24";
+          AuthSubnetWhitelistEnabled = true;
+          LocalHostAuth = false;
+          AlternativeUIEnabled = true;
+          RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
+        };
+        Scheduler = {
+          end_time = "@Variant(\\0\\0\\0\\xf\\0\\0\\0\\0)";
+          start_time = "@Variant(\\0\\0\\0\\xf\\x3\\xa5\\xd6\\x80)";
+        };
       };
     };
   };
-    networking.firewall.allowedTCPPorts = [ 5030 ];
-    services.slskd = {
-    enable = true;
+  networking.firewall.allowedTCPPorts = [ 5030 ];
+  services.slskd = {
+    enable = false;
     openFirewall = true;
     user = "slskd";
     group = "media";
@@ -87,4 +95,9 @@
       directories.incomplete = "/dpool/download/slskd/incomplete/";
     };
   };
+  systemd.services.qbittorrent = {
+  serviceConfig = {
+    UMask = "007";  
+  };
+};
 }

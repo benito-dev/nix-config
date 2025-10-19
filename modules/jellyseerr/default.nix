@@ -55,7 +55,7 @@ in
            "hostname": "localhost",
            "port":8096,
            "urlBase":"",
-           "email": "test@gmail.com",
+           "email": "test@gmail.comzz",
            "serverType": 2
            }' && cat cookie.txt > $cookie && cookie_sid=$(${pkgs.gawk}/bin/awk '/connect\.sid/ {print $7}' $cookie)
 
@@ -71,7 +71,7 @@ in
              "ip":"localhost",
              "port":8096,
              "useSsl":false,
-             "urlBase":"",
+             "urlBase":"/jellyseerr",
              "externalHostname":"",
              "jellyfinForgotPasswordUrl":"",
              "apiKey":"'"$(cat ${config.sops.secrets."jellyfin/apikey".path})"'"

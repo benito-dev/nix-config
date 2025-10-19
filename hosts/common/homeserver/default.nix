@@ -78,6 +78,7 @@
     python3
     nixfmt-tree
     vuetorrent
+    mkcert
   ];
 
   nixpkgs.config.allowUnfree = true;

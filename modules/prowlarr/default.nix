@@ -87,7 +87,7 @@ in
               "apiKey": "'"${cfg.init.apikey}"'",
               "sslCertPath": "",
               "sslCertPassword": "",
-              "urlBase": "",
+              "urlBase": "/prowlarr",
               "instanceName": "Prowlarr",
               "applicationUrl": "",
               "updateAutomatically": false,

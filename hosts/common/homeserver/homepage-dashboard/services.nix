@@ -4,25 +4,94 @@
 {
   services.homepage-dashboard.services = [
     {
+      "AMonitoring" = [
+        {
+          "cpu" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "cpu";
+              chart = false;
+            };
+          };
+        }
+
+        {
+          "Memory" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "memory";
+              chart = false;
+            };
+          };
+        }
+        {
+          "Gpu" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "gpu:amd0";
+              chart = false;
+            };
+          };
+        }
+        {
+          "Dpool" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "fs:/dpool";
+              chart = false;
+            };
+          };
+        }
+        {
+          "Temp" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "sensors:k10temp-pci-00c3";
+            };
+          };
+        }
+        {
+          "network" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "network:br0";
+            };
+          };
+        }
+      ];
+    }
+    {
       "Media" = [
         {
           "Jellyseerr" = {
-            href = "http://192.168.0.240:${toString config.services.jellyseerr.port}";
+            href = "http://192.168.0.240/jellyseerr";
             icon = "jellyseerr";
             widget = {
               type = "jellyseerr";
-              url = "http://192.168.0.240:${toString config.services.jellyseerr.port}";
+              url = "http://localhost:${toString config.services.jellyseerr.port}";
               key = "";
             };
           };
         }
         {
           "Sonarr" = {
-            href = "http://192.168.0.240:${toString config.services.sonarr.settings.server.port}";
+            href = "http://192.168.0.240/sonarr";
             icon = "sonarr.png";
             widget = {
               type = "sonarr";
-              url = "http://192.168.0.240:${toString config.services.sonarr.settings.server.port}";
+              url = "http://localhost:${toString config.services.sonarr.settings.server.port}";
               key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
               enableQueue = true;
             };
@@ -30,11 +99,11 @@
         }
         {
           "Radarr" = {
-            href = "http://192.168.0.240:${toString config.services.radarr.settings.server.port}";
+            href = "http://192.168.0.240/radarr";
             icon = "radarr.png";
             widget = {
               type = "radarr";
-              url = "http://192.168.0.240:${toString config.services.radarr.settings.server.port}";
+              url = "http://localhost:${toString config.services.radarr.settings.server.port}";
               key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
               enableQueue = true;
             };
@@ -42,36 +111,46 @@
         }
         {
           "Prowlarr" = {
-            href = "http://192.168.0.240:${toString config.services.prowlarr.settings.server.port}";
+            href = "http://192.168.0.240/prowlarr";
             icon = "prowlarr";
             widget = {
               type = "prowlarr";
-              url = "http://192.168.0.240:${toString config.services.prowlarr.settings.server.port}";
+              url = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
               key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
             };
           };
         }
         {
           "qBittorrent" = {
-            href = "http://192.168.0.240:${toString config.services.qbittorrent.webuiPort}";
+            href = "http://192.168.0.240/qbittorrent";
             icon = "qbittorrent.png";
             widget = {
               type = "qbittorrent";
-              url = "http://192.168.0.240:${toString config.services.qbittorrent.webuiPort}";
+              url = "http://localhost:${toString config.services.qbittorrent.webuiPort}";
               enableLeechProgress = true;
             };
           };
         }
         {
           "Jellyfin" = {
-            href = "http://192.168.0.240:${toString config.services.declarative-jellyfin.network.internalHttpPort}";
+            href = "http://192.168.0.240/jellyfin";
             icon = "jellyfin";
             widget = {
               type = "jellyfin";
-              url = "http://192.168.0.240:${toString config.services.declarative-jellyfin.network.internalHttpPort}";
+              url = "http://localhost:${toString config.services.declarative-jellyfin.network.internalHttpPort}";
               key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
               enableBlocks = true;
             };
+          };
+        }
+      ];
+    }
+    {
+      "Network" = [
+        {
+          "Cockpit" = {
+            href = "http://192.168.0.240:9090";
+            icon = "cockpit";
           };
         }
       ];

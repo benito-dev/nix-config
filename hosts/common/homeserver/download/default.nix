@@ -15,7 +15,6 @@
 
   services.qbittorrent = {
     enable = true;
-    openFirewall = true;
     group = "media";
     serverConfig = {
       BitTorrent = {
@@ -96,8 +95,8 @@
     };
   };
   systemd.services.qbittorrent = {
-  serviceConfig = {
-    UMask = "007";  
+    serviceConfig = {
+      UMask = "007";
+    };
   };
-};
 }

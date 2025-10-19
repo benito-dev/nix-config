@@ -81,7 +81,7 @@ in
               "bindAddress": "*",
               "port": '${toString cfg.settings.server.port}',
               "sslPort": '${toString cfg.settings.server.port}' ,
-              "enableSsl": false,
+              "enableSsl": true,
               "launchBrowser": true,
               "authenticationMethod": "'"${cfg.init.method}"'",
               "authenticationRequired": "'"${cfg.init.required}"'",
@@ -96,7 +96,7 @@ in
               "apiKey": "'"${cfg.init.apikey}"'",
               "sslCertPath": "",
               "sslCertPassword": "",
-              "urlBase": "",
+              "urlBase": "/radarr",
               "instanceName": "Radarr",
               "applicationUrl": "",
               "updateAutomatically": false,
@@ -138,8 +138,12 @@ in
                   { "name": "port", "value": '${toString config.services.qbittorrent.webuiPort}' },
                   { "name": "useSsl", "value": false },
                   { "name": "urlBase", "value": "" },
-                  {"name": "username", "value": "'"$(cat ${config.sops.secrets."qbittorrent/username".path})"'"},
-                  {"name": "password", "value": "'"$(cat ${config.sops.secrets."qbittorrent/password".path})"'"},
+                  {"name": "username", "value": "'"$(cat ${
+                    config.sops.secrets."qbittorrent/username".path
+                  })"'"},
+                  {"name": "password", "value": "'"$(cat ${
+                    config.sops.secrets."qbittorrent/password".path
+                  })"'"},
                   { "name": "category", "value": "radarr" },
                   { "name": "recentTvPriority", "value": 1 },
                   { "name": "olderTvPriority", "value": 1 },

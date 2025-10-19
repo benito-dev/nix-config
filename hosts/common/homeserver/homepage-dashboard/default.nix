@@ -4,7 +4,7 @@
   imports = [
     ./services.nix
     ./settings.nix
-    ./widget.nix
+    # ./widget.nix
   ];
 
   sops.secrets = {
@@ -13,8 +13,13 @@
 
   services.homepage-dashboard = {
     enable = true;
-    openFirewall = true;
     allowedHosts = "*";
     environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
+  };
+  services.glances = {
+    enable = true;
+    extraArgs = [
+      "--webserver"
+    ];
   };
 }

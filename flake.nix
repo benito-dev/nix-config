@@ -4,6 +4,7 @@
   inputs = {
 
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs?ref=nixos-25.05";
 
     declarative-jellyfin = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,15 +29,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/homeserver/configuration.nix
-          inputs.declarative-jellyfin.nixosModules.default
-          inputs.sops-nix.nixosModules.sops
-        ];
-      };
-      nixosConfigurations."hms-test" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/hms-test/configuration.nix
           inputs.declarative-jellyfin.nixosModules.default
           inputs.sops-nix.nixosModules.sops
         ];

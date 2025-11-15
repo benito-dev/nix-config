@@ -2,6 +2,7 @@
 # https://gethomepage.dev/latest/nix-env -q package-nameconfigs/settings
 {
   services.homepage-dashboard.settings = {
+    base = "http://192.168.0.240/homepage";
     layout = {
       "AMonitoring" = {
         header = false;

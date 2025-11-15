@@ -15,6 +15,7 @@
     enable = true;
     allowedHosts = "*";
     environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
+    #package = pkgs-stable.homepage-dashboard;
   };
   services.glances = {
     enable = true;

@@ -62,12 +62,25 @@
         }
         {
           "network" = {
+            refreshInterval = 500;
             widget = {
               type = "glances";
               version = 4;
               url = "http://localhost:61208";
               metric = "network:br0";
+
             };
+          };
+        }
+        {
+          "process" = {
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "process";
+            };
+            refreshInterval = 500;
           };
         }
       ];
@@ -81,7 +94,7 @@
             widget = {
               type = "jellyseerr";
               url = "http://localhost:${toString config.services.jellyseerr.port}";
-              key = "";
+              key = "MTc1MjkxNjIzMjQ4OThmZGRiNzE4LTZjZGUtNGI2ZC04MjA3LWMwMGJkMzA2MjYyZg==";
             };
           };
         }
@@ -91,7 +104,7 @@
             icon = "sonarr.png";
             widget = {
               type = "sonarr";
-              url = "http://localhost:${toString config.services.sonarr.settings.server.port}";
+              url = "http://localhost:8989";
               key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
               enableQueue = true;
             };
@@ -136,10 +149,10 @@
             href = "http://192.168.0.240/jellyfin";
             icon = "jellyfin";
             widget = {
-              type = "jellyfin";
-              url = "http://localhost:${toString config.services.declarative-jellyfin.network.internalHttpPort}";
+              type = "emby";
+              url = "http://localhost:8096";
               key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
-              enableBlocks = true;
+              #enableBlocks = true;
             };
           };
         }

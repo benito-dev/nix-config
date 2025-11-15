@@ -11,9 +11,14 @@
 
     ./hardware-configuration.nix
     ../../modules/homeserver.nix
-    ../common/homeserver
     ./zfs
     ./samba
+    ./arrStack
+    ./download
+    ./homepage-dashboard
+    ./jellyfin
+    ./nginx
+    ./authelia
   ];
 
   nix.settings.experimental-features = [
@@ -43,7 +48,10 @@
     firewall = {
       enable = true;
       allowPing = true;
-      allowedTCPPorts = [ 80 443 8096 ];
+      allowedTCPPorts = [
+        80
+        443
+      ];
     };
     bridges."br0".interfaces = [
       "enp6s0"
@@ -62,56 +70,120 @@
     };
   };
 
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-    virtualHosts."192.168.0.240" = {
-      forceSSL = true;
-      sslCertificate = "/dpool/certs/myserver.local.pem";
-      sslCertificateKey = "/dpool/certs/myserver.local-key.pem";
-      locations."/".proxyPass = "http://localhost:8082";
-      locations."/jellyfin".proxyPass = "http://localhost:8096";
-      locations."/sonarr".proxyPass = "http://localhost:8989";
-      locations."/radarr".proxyPass = "http://localhost:7878";
-      locations."/prowlarr".proxyPass = "http://localhost:9696";
-      locations."/qbittorrent/".proxyPass = "http://localhost:8080/";
-      locations."/jellyseerr" = {
-        proxyPass = "http://localhost:5055";
-        extraConfig = '' 
-              set $app 'jellyseerr';
+  # Locales
 
-              # Remove /jellyseerr path to pass to the app
-              rewrite ^/jellyseerr/?(.*)$ /$1 break;
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "fr_BE.UTF-8";
+      LC_IDENTIFICATION = "fr_BE.UTF-8";
+      LC_MEASUREMENT = "fr_BE.UTF-8";
+      LC_MONETARY = "fr_BE.UTF-8";
+      LC_NAME = "fr_BE.UTF-8";
+      LC_NUMERIC = "fr_BE.UTF-8";
+      LC_PAPER = "fr_BE.UTF-8";
+      LC_TELEPHONE = "fr_BE.UTF-8";
+      LC_TIME = "fr_BE.UTF-8";
+    };
+  };
 
-              # Redirect location headers
-              proxy_redirect ^ /$app;
-              proxy_redirect /setup /$app/setup;
-              proxy_redirect /login /$app/login;
+  time.timeZone = "Europe/Brussels";
+  console.keyMap = "be-latin1";
 
-              # Sub filters to replace hardcoded paths
-              proxy_set_header Accept-Encoding "";
-              sub_filter_once off;
-              sub_filter_types *;
-              sub_filter 'href="/"' 'href="/$app"';
-              sub_filter 'href="/login"' 'href="/$app/login"';
-              sub_filter 'href:"/"' 'href:"/$app"';
-              sub_filter '\/_next' '\/$app\/_next';
-              sub_filter '/_next' '/$app/_next';
-              sub_filter '/api/v1' '/$app/api/v1';
-              sub_filter '/login/plex/loading' '/$app/login/plex/loading';
-              sub_filter '/images/' '/$app/images/';
-              sub_filter '/imageproxy/' '/$app/imageproxy/';
-              sub_filter '/avatarproxy/' '/$app/avatarproxy/';
-              sub_filter '/android-' '/$app/android-';
-              sub_filter '/apple-' '/$app/apple-';
-              sub_filter '/favicon' '/$app/favicon';
-              sub_filter '/logo_' '/$app/logo_';
-              sub_filter '/site.webmanifest' '/$app/site.webmanifest';
-        '';
+  # Users and groups
+
+  users = {
+    users."benito" = {
+      isNormalUser = true;
+      description = "benito";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "media"
+        "apps"
+      ];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC78SVoQExVRFtie6CHRmxgB3BgYtQ/OqLqPmA1LZvDa"
+      ];
+      packages = with pkgs; [ ];
+    };
+    groups = {
+      "media" = { };
+      "apps" = { };
+    };
+  };
+
+  services.getty.autologinUser = "benito";
+
+  security.sudo.extraRules = [
+    {
+      users = [ "benito" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
+  environment.systemPackages = with pkgs; [
+    nix-ld
+    sops
+    cifs-utils
+    age
+    python3
+    nixfmt-tree
+    vuetorrent
+    mkcert
+  ];
+  nixpkgs.config.allowUnfree = true;
+  programs = {
+    nix-ld.enable = true;
+    git = {
+      enable = true;
+      config = {
+        user = {
+          name = "Benito-dev";
+          email = "Benoit.Blervaque@gmail.com";
+        };
+        safe.directory = [ "/etc/nixos" ];
+        init.defaultBranch = "main";
+        core.editor = "nano";
+        pull.rebase = true;
+        url = {
+          "https://github.com/" = {
+            insteadOf = [
+              "gh:"
+              "github:"
+            ];
+          };
+        };
       };
     };
   };
-  system.stateVersion = "25.05";
 
+  # Services
+
+  services = {
+    openssh = {
+      enable = true;
+      settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+      };
+    };
+
+  };
+  sops = {
+    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    validateSopsFiles = false;
+    age.keyFile = "/home/benito/.config/sops/age/keys.txt";
+    secrets."cifs/credentials" = { };
+
+  };
+  system.stateVersion = "25.05";
 }

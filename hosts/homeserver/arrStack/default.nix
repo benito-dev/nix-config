@@ -60,5 +60,6 @@
   services.jellyseerr = {
     enable = true;
     init.enable = true;
+    openFirewall = true;
   };
 }

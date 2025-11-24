@@ -51,16 +51,6 @@
           };
         }
         {
-          "Temp" = {
-            widget = {
-              type = "glances";
-              version = 4;
-              url = "http://localhost:61208";
-              metric = "sensors:k10temp-pci-00c3";
-            };
-          };
-        }
-        {
           "network" = {
             refreshInterval = 500;
             widget = {
@@ -149,10 +139,10 @@
             href = "http://192.168.0.240/jellyfin";
             icon = "jellyfin";
             widget = {
-              type = "emby";
+              type = "jellyfin";
               url = "http://localhost:8096";
               key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
-              #enableBlocks = true;
+              enableBlocks = true;
             };
           };
         }
@@ -164,6 +154,18 @@
           "Cockpit" = {
             href = "http://192.168.0.240:9090";
             icon = "cockpit";
+          };
+        }
+        {
+          "Adguard" = {
+            href = "http://192.168.0.240/adguard";
+            icon = "adguardhome";
+            widget = {
+              type = "adguard";
+              url = "http://localhost:3000";
+              user = "benito";
+              password = "test";
+            };
           };
         }
       ];

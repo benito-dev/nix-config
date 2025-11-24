@@ -79,7 +79,7 @@
       };
     };
   };
-  networking.firewall.allowedTCPPorts = [ 5030 ];
+  #networking.firewall.allowedTCPPorts = [ 5030 ];
   services.slskd = {
     enable = false;
     openFirewall = true;

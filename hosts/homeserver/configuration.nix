@@ -10,6 +10,7 @@
   imports = [
 
     ./hardware-configuration.nix
+    ./network.nix
     ../../modules/homeserver.nix
     ./zfs
     ./samba
@@ -19,6 +20,7 @@
     ./jellyfin
     ./nginx
     ./authelia
+    ./adguard
   ];
 
   nix.settings.experimental-features = [
@@ -30,45 +32,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Network
-
-  networking = {
-
-    defaultGateway = {
-      address = "192.168.0.1";
-      interface = "br0";
-    };
-    hostId = "37740ce0";
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
-    hostName = "homeserver";
-    firewall = {
-      enable = true;
-      allowPing = true;
-      allowedTCPPorts = [
-        80
-        443
-      ];
-    };
-    bridges."br0".interfaces = [
-      "enp6s0"
-      "enp7s0"
-      "enp8s0"
-      "enp9s0"
-      "enp12s0"
-    ];
-    interfaces = {
-      "br0".ipv4.addresses = [
-        {
-          address = "192.168.0.240";
-          prefixLength = 24;
-        }
-      ];
-    };
-  };
 
   # Locales
 
@@ -138,7 +101,9 @@
     vuetorrent
     mkcert
   ];
+
   nixpkgs.config.allowUnfree = true;
+
   programs = {
     nix-ld.enable = true;
     git = {

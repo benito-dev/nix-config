@@ -4,8 +4,6 @@
   inputs = {
 
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs?ref=nixos-25.05";
-
     declarative-jellyfin = {
       inputs.nixpkgs.follows = "nixpkgs";
       owner = "Sveske-Juice";

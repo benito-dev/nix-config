@@ -4,7 +4,7 @@
   imports = [
     ./services.nix
     ./settings.nix
-    # ./widget.nix
+    ./widget.nix
   ];
 
   sops.secrets = {
@@ -15,8 +15,8 @@
     enable = true;
     allowedHosts = "*";
     environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
-    #package = pkgs-stable.homepage-dashboard;
   };
+
   services.glances = {
     enable = true;
     extraArgs = [

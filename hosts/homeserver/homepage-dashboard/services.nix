@@ -84,7 +84,7 @@
             widget = {
               type = "jellyseerr";
               url = "http://localhost:${toString config.services.jellyseerr.port}";
-              key = "MTc1MjkxNjIzMjQ4OThmZGRiNzE4LTZjZGUtNGI2ZC04MjA3LWMwMGJkMzA2MjYyZg==";
+              key = "MTc2MjU0NjQ5ODk0Njk4MThmNmE2LTU2ZTktNDlmZS1hMTM1LWViNmIzZmUwNTI1Yg==";
             };
           };
         }
@@ -140,7 +140,7 @@
             icon = "jellyfin";
             widget = {
               type = "jellyfin";
-              url = "http://localhost:8096";
+              url = "http://localhost:8096/jellyfin";
               key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
               enableBlocks = true;
             };
@@ -159,9 +159,9 @@
         {
           "Adguard" = {
             href = "http://192.168.0.240/adguard";
-            icon = "adguardhome";
+            icon = "adguard-home";
             widget = {
-              type = "adguard";
+              type = "adguard-home";
               url = "http://localhost:3000";
               user = "benito";
               password = "test";

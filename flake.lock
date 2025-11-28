@@ -83,11 +83,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1763421233,
-        "narHash": "sha256-Stk9ZYRkGrnnpyJ4eqt9eQtdFWRRIvMxpNRf4sIegnw=",
+        "lastModified": 1763966396,
+        "narHash": "sha256-6eeL1YPcY1MV3DDStIDIdy/zZCDKgHdkCmsrLJFiZf0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "89c2b2330e733d6cdb5eae7b899326930c2c0648",
+        "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
         "type": "github"
       },
       "original": {
@@ -97,10 +97,31 @@
         "type": "github"
       }
     },
+    "nixvirt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762024563,
+        "narHash": "sha256-jQNt4yOfCnhuePhRRi1bdILJ2eAEHFHrk3F6Dfjk1t8=",
+        "owner": "AshleyYakeley",
+        "repo": "NixVirt",
+        "rev": "28906a0d198d5cdcb9501e3703eca93a482f03f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AshleyYakeley",
+        "repo": "NixVirt",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "declarative-jellyfin": "declarative-jellyfin",
         "nixpkgs": "nixpkgs_2",
+        "nixvirt": "nixvirt",
         "sops-nix": "sops-nix"
       }
     },
@@ -111,11 +132,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763607916,
-        "narHash": "sha256-VefBA1JWRXM929mBAFohFUtQJLUnEwZ2vmYUNkFnSjE=",
+        "lastModified": 1764021963,
+        "narHash": "sha256-1m84V2ROwNEbqeS9t37/mkry23GBhfMt8qb6aHHmjuc=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "877bb495a6f8faf0d89fc10bd142c4b7ed2bcc0b",
+        "rev": "c482a1c1bbe030be6688ed7dc84f7213f304f1ec",
         "type": "github"
       },
       "original": {

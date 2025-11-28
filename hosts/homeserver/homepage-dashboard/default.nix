@@ -4,7 +4,7 @@
   imports = [
     ./services.nix
     ./settings.nix
-    ./widget.nix
+    #./widget.nix
   ];
 
   sops.secrets = {

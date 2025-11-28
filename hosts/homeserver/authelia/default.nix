@@ -20,7 +20,7 @@
       settings = {
 
         server = {
-          address = "tcp://localhost:9091/";
+          address = "tcp://localhost:9091/authelia";
           endpoints.authz.auth-request.implementation = "AuthRequest";
 
         };
@@ -54,8 +54,8 @@
           cookies = [
             {
               domain = "bilbedon.duckdns.org";
-              authelia_url = "https://bilbedon.duckdns.org/";
-              default_redirection_url = "https://bilbedon.duckdns.org/homepage";
+              authelia_url = "https://bilbedon.duckdns.org/authelia";
+              default_redirection_url = "https://bilbedon.duckdns.org";
             }
           ];
         };

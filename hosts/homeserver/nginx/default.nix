@@ -16,7 +16,9 @@
       enableACME = true;
       locations = {
 
-        "/".proxyPass = "http://localhost:8082";
+        "/" = {
+          proxyPass = "http://localhost:8082/";
+        };
 
         "/adguard/".proxyPass = "http://localhost:3000/";
 
@@ -72,9 +74,9 @@
       enableACME = true;
       locations = {
 
-        "/".proxyPass = "http://localhost:9091";
+        "/authelia/".proxyPass = "http://localhost:9091/";
 
-        "/homepage/" = {
+        "/" = {
           proxyPass = "http://localhost:8082/";
           extraConfig = ''
             proxy_set_header Host $host;

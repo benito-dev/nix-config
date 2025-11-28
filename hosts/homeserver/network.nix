@@ -7,10 +7,10 @@
 }:
 {
   sops.secrets = {
-    "wifi/saePassword" = {} ;
-    "wifi/wpaPassword" = {} ;
+    "wifi/saePassword" = { };
+    "wifi/wpaPassword" = { };
 
-  } ;
+  };
   # Network
   networking = {
     defaultGateway = {
@@ -63,7 +63,7 @@
           ssid = "Home";
           authentication = {
             mode = "wpa3-sae-transition";
-            saePasswordsFile = config.sops.secrets."wifi/saePassword".path;         
+            saePasswordsFile = config.sops.secrets."wifi/saePassword".path;
             wpaPasswordFile = config.sops.secrets."wifi/wpaPassword".path;
           };
           settings = {

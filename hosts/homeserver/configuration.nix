@@ -21,6 +21,7 @@
     ./nginx
     ./authelia
     ./adguard
+    ./nixvirt
   ];
 
   nix.settings.experimental-features = [
@@ -64,6 +65,7 @@
         "wheel"
         "media"
         "apps"
+        "libvirtd"
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgpTl0n7wz58k48wHoPihIfgLzJOAydDxz6fFURN6qL"

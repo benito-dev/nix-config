@@ -19,9 +19,7 @@
     };
 
     nixvirt = {
-      owner = "AshleyYakeley";
-      repo = "NixVirt";
-      type = "github";
+      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

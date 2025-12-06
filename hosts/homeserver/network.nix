@@ -13,6 +13,8 @@
   };
   # Network
   networking = {
+    networkmanager.enable = false;
+    useDHCP = false;
     defaultGateway = {
       address = "192.168.0.1";
       interface = "br0";
@@ -41,7 +43,6 @@
       "enp8s0"
       "enp9s0"
       "enp12s0"
-
     ];
     interfaces = {
       "br0".ipv4.addresses = [
@@ -51,6 +52,33 @@
         }
       ];
     };
+  };
+  systemd.services.br0-netdev = {
+    after = [
+      "network-pre.target"
+      "sys-subsystem-net-devices-enp6s0.device"
+      "sys-subsystem-net-devices-enp7s0.device"
+      "sys-subsystem-net-devices-enp8s0.device"
+      "sys-subsystem-net-devices-enp9s0.device"
+      "sys-subsystem-net-devices-enp12s0.device"
+    ];
+    wants = [
+      "sys-subsystem-net-devices-enp6s0.device"
+      "sys-subsystem-net-devices-enp7s0.device"
+      "sys-subsystem-net-devices-enp8s0.device"
+      "sys-subsystem-net-devices-enp9s0.device"
+      "sys-subsystem-net-devices-enp12s0.device"
+    ];
+    serviceConfig = {
+      # Add a small delay to ensure devices are fully ready
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+    };
+  };
+
+  # Ensure hostapd starts AFTER the bridge is ready
+  systemd.services.hostapd = {
+    after = [ "br0-netdev.service" ];
+    requires = [ "br0-netdev.service" ];
   };
   services = {
     hostapd = {

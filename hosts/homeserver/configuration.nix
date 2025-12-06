@@ -102,6 +102,11 @@
     nixfmt-tree
     vuetorrent
     mkcert
+    pciutils
+    iw
+    vim
+    usbutils
+    nettools
   ];
 
   nixpkgs.config.allowUnfree = true;

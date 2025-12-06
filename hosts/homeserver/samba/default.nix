@@ -15,6 +15,7 @@
         "max log size" = "50";
         "passdb backend" = "tdbsam";
         "map to guest" = "bad user";
+        "multicast dns register" = "yes";
       };
       "Data" = {
         "valid users" = "benito";
@@ -77,5 +78,6 @@
   services.cockpit = {
     enable = true;
     openFirewall = true;
+    allowed-origins = [ "192.168.0.1/24" ];
   };
 }

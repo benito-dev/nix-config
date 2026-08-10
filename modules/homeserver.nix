@@ -2,7 +2,7 @@
   imports = [
     ./sonarr
     ./radarr
-    ./jellyseerr
+    ./seerr
     ./docker
     ./prowlarr
     ./lidarr

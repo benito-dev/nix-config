@@ -57,9 +57,9 @@
     init.enable = true;
   };
 
-  services.jellyseerr = {
+  services.seerr = {
     enable = true;
-    init.enable = true;
+    init.enable = false;
     openFirewall = true;
   };
 }

@@ -10,8 +10,14 @@
   imports = [ inputs.declarative-jellyfin.nixosModules.default ];
 
   sops.secrets = {
-    "jellyfin/apikey" = { };
-    "jellyfin/benito/password" = { };
+    "jellyfin/apikey" = {
+      owner = "jellyfin";
+      group = "media";
+    };
+    "jellyfin/benito/password" = {
+      owner = "jellyfin";
+      group = "media";
+    };
   };
 
   users.users.jellyfin.extraGroups = [

@@ -78,12 +78,12 @@
     {
       "Media" = [
         {
-          "Jellyseerr" = {
-            href = "http://192.168.0.240/jellyseerr";
+          "Seerr" = {
+            href = "http://192.168.0.240/seerr";
             icon = "jellyseerr";
             widget = {
               type = "jellyseerr";
-              url = "http://localhost:${toString config.services.jellyseerr.port}";
+              url = "http://localhost:${toString config.services.seerr.port}";
               key = "MTc2MjU0NjQ5ODk0Njk4MThmNmE2LTU2ZTktNDlmZS1hMTM1LWViNmIzZmUwNTI1Yg==";
             };
           };

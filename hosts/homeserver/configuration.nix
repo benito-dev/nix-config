@@ -14,14 +14,15 @@
     ../../modules/homeserver.nix
     ./zfs
     ./samba
+    ./nfs
     ./arrStack
     ./download
     ./homepage-dashboard
     ./jellyfin
     ./nginx
-    ./authelia
+    #./authelia
     ./adguard
-    ./nixvirt
+    ./trilium
   ];
 
   nix.settings.experimental-features = [
@@ -107,6 +108,7 @@
     vim
     usbutils
     nettools
+    unrar
   ];
 
   nixpkgs.config.allowUnfree = true;

@@ -17,11 +17,6 @@
       repo = "sops-nix";
       type = "github";
     };
-
-    nixvirt = {
-      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -34,7 +29,6 @@
           ./hosts/homeserver/configuration.nix
           inputs.declarative-jellyfin.nixosModules.default
           inputs.sops-nix.nixosModules.sops
-          inputs.nixvirt.nixosModules.default
         ];
       };
     };

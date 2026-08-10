@@ -8,23 +8,23 @@
 
 let
 
-  cfg = config.services.jellyseerr;
+  cfg = config.services.seerr;
   port = "${toString cfg.port}";
 in
 {
-  options.services.jellyseerr.init.enable = lib.mkEnableOption "Initializing Jellyseerr";
+  options.services.seerr.init.enable = lib.mkEnableOption "Initializing seerr";
 
   config = lib.mkIf (cfg.enable && cfg.init.enable) {
     systemd.services.initJellyseerr = {
-      description = "Initialize Jellyseerr";
+      description = "Initialize seerr";
       after = [
-        "jellyseerr.service"
+        "seerr.service"
         "jellyfin.service"
         "initSonarr.service"
         "initRadarr.service"
       ];
       wants = [
-        "jellyseerr.service"
+        "seerr.service"
         "jellyfin.service"
         "initSonarr.service"
         "initRadarr.service"
@@ -33,16 +33,16 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "Initialize Jellyseerr" ''
+        ExecStart = pkgs.writeShellScript "Initialize seerr" ''
            echo "http://localhost:${port}/api/v1/status"
-           # Sleep until jellyseerr is up and running
+           # Sleep until seerr is up and running
 
            until ${pkgs.curl}/bin/curl -s -X GET "http://localhost:${port}/api/v1/status" -H 'accept: application/json'
            do
            sleep 1
            done
 
-           touch ${config.services.jellyseerr.configDir}/cookie.txt && cookie=${config.services.jellyseerr.configDir}/cookie.txt
+           touch ${config.services.seerr.configDir}/cookie.txt && cookie=${config.services.seerr.configDir}/cookie.txt
 
            [ -s $cookie ] && cookie_sid=$(${pkgs.gawk}/bin/awk '/connect\.sid/ {print $7}' $cookie)
            [ "$(${pkgs.curl}/bin/curl  -w "%{http_code}" -s -o /dev/null  -X 'GET' "http://localhost:${port}/api/v1/auth/me" -H 'accept: application/json' -H "Cookie: connect.sid=$cookie_sid")"  -eq 200 ] || \

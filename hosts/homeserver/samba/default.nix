@@ -17,9 +17,9 @@
         "map to guest" = "bad user";
         "multicast dns register" = "yes";
       };
-      "Data" = {
+      "Batocera" = {
         "valid users" = "benito";
-        "path" = "/dpool/data";
+        "path" = "/dpool/batocera";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";

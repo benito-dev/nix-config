@@ -9,8 +9,8 @@
   sops.secrets = {
     "wifi/saePassword" = { };
     "wifi/wpaPassword" = { };
-
   };
+
   # Network
   networking = {
     networkmanager.enable = false;
@@ -29,12 +29,15 @@
       enable = true;
       allowPing = true;
       allowedTCPPorts = [
+        53
         80
         443
-        53
+        2049
       ];
       allowedUDPPorts = [
         53
+        67
+        68
       ];
     };
     bridges."br0".interfaces = [

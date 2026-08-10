@@ -30,11 +30,11 @@
           IgnoreLimitsOnLAN = false;
           IncludeOverheadInLimits = false;
           LSDEnabled = false;
-          MaxActiveDownloads = "5";
-          MaxActiveTorrents = "5";
-          MaxActiveUploads = "2";
-          MaxConnections = "250";
-          MaxConnectionsPerTorrent = "50";
+          MaxActiveDownloads = "15";
+          MaxActiveTorrents = "20";
+          MaxActiveUploads = "5";
+          MaxConnections = "2000";
+          MaxConnectionsPerTorrent = "100";
           Port = "63586";
           Preallocation = true;
           QueueingSystemEnabled = true;

@@ -21,6 +21,8 @@
     enable = true;
     extraArgs = [
       "--webserver"
+      "--disable-plugin"
+      "processcount"
     ];
   };
 }

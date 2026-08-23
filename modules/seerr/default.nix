@@ -54,7 +54,6 @@ in
            "password": "test",
            "hostname": "localhost",
            "port":8096,
-           "urlBase":"/jellyfin",
            "email": "test@gmail.comzz",
            "serverType": 2
            }' && cat cookie.txt > $cookie && cookie_sid=$(${pkgs.gawk}/bin/awk '/connect\.sid/ {print $7}' $cookie)

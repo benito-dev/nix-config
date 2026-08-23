@@ -20,7 +20,7 @@
     ./homepage-dashboard
     ./jellyfin
     ./nginx
-    #./authelia
+    ./authelia
     ./adguard
     ./trilium
   ];
@@ -119,8 +119,8 @@
       enable = true;
       config = {
         user = {
-          name = "Benito-dev";
-          email = "Benoit.Blervaque@gmail.com";
+          name = config.sops.secrets."git/name".path;
+          email = config.sops.secrets."git/email".path;
         };
         safe.directory = [ "/etc/nixos" ];
         init.defaultBranch = "main";
@@ -149,7 +149,7 @@
         KbdInteractiveAuthentication = false;
       };
     };
-
+  vscode-server.enable = true;
   };
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
@@ -157,7 +157,10 @@
     validateSopsFiles = false;
     age.keyFile = "/home/benito/.config/sops/age/keys.txt";
     secrets."cifs/credentials" = { };
-
+  };
+  sops.secrets = {
+    "git/name" = { };
+    "git/email" = { };
   };
   system.stateVersion = "25.05";
 }

@@ -1,10 +1,14 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
 { config, ... }:
+let
+  privateDomain = "bilhome.duckdns.org";
+  publicDomain = "bilhomelab.duckdns.org";
+in
 {
   services.homepage-dashboard.services = [
     {
-      "AMonitoring" = [
+      "Monitoring" = [
         {
           "cpu" = {
             widget = {
@@ -40,6 +44,19 @@
           };
         }
         {
+          "network" = {
+            refreshInterval = 500;
+            widget = {
+              type = "glances";
+              version = 4;
+              url = "http://localhost:61208";
+              metric = "network:br0";
+              chart = false;
+            };
+          };
+
+        }
+        {
           "Dpool" = {
             widget = {
               type = "glances";
@@ -50,27 +67,16 @@
             };
           };
         }
-        {
-          "network" = {
-            refreshInterval = 500;
-            widget = {
-              type = "glances";
-              version = 4;
-              url = "http://localhost:61208";
-              metric = "network:br0";
 
-            };
-          };
-        }
         {
-          "process" = {
+          "/" = {
             widget = {
               type = "glances";
               version = 4;
               url = "http://localhost:61208";
-              metric = "process";
+              metric = "fs:/";
+              chart = false;
             };
-            refreshInterval = 500;
           };
         }
       ];
@@ -78,54 +84,8 @@
     {
       "Media" = [
         {
-          "Seerr" = {
-            href = "http://192.168.0.240/seerr";
-            icon = "jellyseerr";
-            widget = {
-              type = "jellyseerr";
-              url = "http://localhost:${toString config.services.seerr.port}";
-              key = "MTc2MjU0NjQ5ODk0Njk4MThmNmE2LTU2ZTktNDlmZS1hMTM1LWViNmIzZmUwNTI1Yg==";
-            };
-          };
-        }
-        {
-          "Sonarr" = {
-            href = "http://192.168.0.240/sonarr";
-            icon = "sonarr.png";
-            widget = {
-              type = "sonarr";
-              url = "http://localhost:8989";
-              key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
-              enableQueue = true;
-            };
-          };
-        }
-        {
-          "Radarr" = {
-            href = "http://192.168.0.240/radarr";
-            icon = "radarr.png";
-            widget = {
-              type = "radarr";
-              url = "http://localhost:${toString config.services.radarr.settings.server.port}";
-              key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
-              enableQueue = true;
-            };
-          };
-        }
-        {
-          "Prowlarr" = {
-            href = "http://192.168.0.240/prowlarr";
-            icon = "prowlarr";
-            widget = {
-              type = "prowlarr";
-              url = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
-              key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
-            };
-          };
-        }
-        {
           "qBittorrent" = {
-            href = "http://192.168.0.240/qbittorrent";
+            href = "http://qbit.${privateDomain}";
             icon = "qbittorrent.png";
             widget = {
               type = "qbittorrent";
@@ -136,17 +96,106 @@
         }
         {
           "Jellyfin" = {
-            href = "http://192.168.0.240/jellyfin";
+            href = "http://jelly.${publicDomain}";
             icon = "jellyfin";
             widget = {
               type = "jellyfin";
-              url = "http://localhost:8096/jellyfin";
+              url = "http://localhost:8096/";
               key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
               enableBlocks = true;
             };
           };
         }
+        {
+          "Seerr" = {
+            href = "https://seerr.${publicDomain}";
+            icon = "jellyseerr";
+            widget = {
+              type = "jellyseerr";
+              url = "http://localhost:${toString config.services.seerr.port}";
+              key = "{{HOMEPAGE_VAR_SEERR_API_KEY}}";
+            };
+          };
+        }
+        {
+          "Sonarr" = {
+            href = "https://sonarr.${privateDomain}";
+            icon = "sonarr.png";
+            widget = {
+              type = "sonarr";
+              url = "http://localhost:8989";
+              key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
+              #enableQueue = true;
+            };
+          };
+        }
+        {
+          "Radarr" = {
+            href = "https://radarr.${privateDomain}";
+            icon = "radarr.png";
+            widget = {
+              type = "radarr";
+              url = "http://localhost:${toString config.services.radarr.settings.server.port}";
+              key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
+              #enableQueue = true;
+            };
+          };
+        }
+        {
+          "Prowlarr" = {
+            href = "http://prowlarr.${privateDomain}";
+            icon = "prowlarr";
+            widget = {
+              type = "prowlarr";
+              url = "http://localhost:${toString config.services.prowlarr.settings.server.port}";
+              key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
+            };
+          };
+        }
+
       ];
+    }
+    {
+      "Tools" = [
+        {
+          "Trilium" = {
+            href = "http://tril.${publicDomain}";
+            icon = "trilium";
+            widget = {
+              type = "trilium";
+              url = "http://localhost:8085";
+              key = "{{HOMEPAGE_VAR_TRILIUM_API_KEY}}";
+            };
+          };
+        }
+      ];
+    }
+    {
+      "Music" = [
+        {
+          "Slskd" = {
+            href = "http://slsk.${privateDomain}";
+            icon = "slskd";
+            widget = {
+              type = "slskd";
+              url = "http://127.0.0.1:5030";
+              key = config.sops.secrets."soulseek/apikey".path;
+            };
+          };
+        }
+        {
+          "Lidarr" = {
+            href = "http://lidarr.${privateDomain}";
+            icon = "lidarr";
+            widget = {
+              type = "lidarr";
+              url = "http://localhost:8686";
+              key = "{{HOMEPAGE_VAR_LIDARR_API_KEY}}";
+            };
+          };
+        }
+      ];
+
     }
     {
       "Network" = [
@@ -158,13 +207,19 @@
         }
         {
           "Adguard" = {
-            href = "http://192.168.0.240/adguard";
+            href = "http://adguard.${privateDomain}";
             icon = "adguard-home";
             widget = {
-              type = "adguard-home";
+              type = "adguard";
               url = "http://localhost:3000";
-              user = "benito";
+              username = "benito";
               password = "test";
+              fields = [
+                "queries"
+                "blocked"
+                "filtered"
+                "latency"
+              ];
             };
           };
         }

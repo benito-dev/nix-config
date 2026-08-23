@@ -15,12 +15,12 @@ in
   config = mkIf cfg.soularr.enable {
     virtualisation.oci-containers.containers = {
       "soularr" = {
-        image = "mrusse08/soularr:latest";
+        image = "docker.io/mrusse08/soularr:latest";
         hostname = "soularr";
-        user = "1000:1000";
+        user = "1000:993";
         extraOptions = [
           "--group-add=990"
-          "--group-add=993"
+          "--network=host"
         ];
         environment = {
           TZ = "Europe/Brussels";
@@ -28,7 +28,7 @@ in
         };
         volumes = [
           "/dpool/data/soularr:/data"
-          "/dpool/download/slskd/downloads:/downloads"
+          "/dpool/download/slskd/completed:/dpool/download/slskd/completed"
         ];
       };
     };

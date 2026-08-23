@@ -4,7 +4,7 @@
   imports = [
     ./services.nix
     ./settings.nix
-    #./widget.nix
+    ./widget.nix
   ];
 
   sops.secrets = {
@@ -14,7 +14,7 @@
   services.homepage-dashboard = {
     enable = true;
     allowedHosts = "*";
-    environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
+    environmentFiles = [ "${config.sops.secrets."homepage-dashboard".path}" ];
   };
 
   services.glances = {

@@ -6,7 +6,10 @@
 }:
 
 {
-  imports = [ ./recyclarr.nix ];
+  imports = [
+    ./recyclarr.nix
+    ./lidarr.nix
+  ];
   sops.secrets = {
     "sonarr/apikey" = { };
     "sonarr/username" = { };
@@ -20,10 +23,7 @@
     "prowlarr/username" = { };
     "prowlarr/password" = { };
     "prowlarr/ENV/apikey" = { };
-    "lidarr/ENV/apikey" = { };
-    "lidarr/apikey" = { };
-    "lidarr/username" = { };
-    "lidarr/password" = { };
+
   };
 
   services.sonarr = {
@@ -48,15 +48,8 @@
     environmentFiles = [ config.sops.secrets."prowlarr/ENV/apikey".path ];
   };
   extraServices.podman."flaresolverr".enable = true;
+
   networking.firewall.allowedTCPPorts = [ 8191 ];
-
-  services.lidarr = {
-    enable = false;
-    group = "media";
-    environmentFiles = [ config.sops.secrets."lidarr/ENV/apikey".path ];
-    init.enable = true;
-  };
-
   services.seerr = {
     enable = true;
     init.enable = false;

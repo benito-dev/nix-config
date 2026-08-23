@@ -23,6 +23,9 @@ in
           TZ = "Europe/Brussels";
         };
         ports = [ "8191:8191" ];
+        extraOptions = [
+          "--network=host"
+        ];
       };
     };
   };

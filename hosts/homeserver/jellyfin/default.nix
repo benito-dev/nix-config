@@ -30,12 +30,8 @@
   services.declarative-jellyfin = {
     # Move metadata to zfs raid
     enable = true;
-    openFirewall = true;
     serverId = "9069974d38f842ddad31cd6bf88180c4";
     group = "media";
-    network.certificatePath = "/dpool/certs/myserver.local.pem";
-    network.enableHttps = true;
-    network.baseUrl = "/jellyfin";
     system = {
       serverName = "JellyNix";
       isStartupWizardCompleted = true;

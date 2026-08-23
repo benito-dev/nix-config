@@ -4,6 +4,7 @@
   inputs = {
 
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+vscode-server.url = "github:nix-community/nixos-vscode-server";
     declarative-jellyfin = {
       inputs.nixpkgs.follows = "nixpkgs";
       owner = "Sveske-Juice";
@@ -29,6 +30,7 @@
           ./hosts/homeserver/configuration.nix
           inputs.declarative-jellyfin.nixosModules.default
           inputs.sops-nix.nixosModules.sops
+	  inputs.vscode-server.nixosModules.default
         ];
       };
     };

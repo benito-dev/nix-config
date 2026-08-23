@@ -149,7 +149,7 @@
         KbdInteractiveAuthentication = false;
       };
     };
-  vscode-server.enable = true;
+#  vscode-server.enable = true;
   };
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;

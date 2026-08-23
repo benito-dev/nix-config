@@ -21,7 +21,7 @@
     };
     hostId = "37740ce0";
     nameservers = [
-      "192.168.0.240"
+      "1.1.1.1"
       "1.0.0.1"
     ];
     hostName = "homeserver";
